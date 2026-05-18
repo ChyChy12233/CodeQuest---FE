@@ -19,7 +19,7 @@ export default function Asssessment() {
   const [currentQuest, setCurrentQuest] = useState(1);
   const [ans, setAns] = useState<Record<number, string>>({});
   const answeredCount = Object.keys(ans).length;
-  const [quest, setQuest] = useState<any[]>([]);
+  const [quest, setQuest] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleSelect = (select: string) => {
