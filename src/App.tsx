@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router";
 import { Login } from "./features/auth/components/Login";
 import { SignUp } from "./features/auth/components/SignUp";
 import { CodeEditor } from "./features/editor/components/CodeEditor";
-import Asssessment from "./components-nhunhu/Assessment";
+import Asssessment from "./features/assessment/Assessment";
 function App() {
   return (
     <Routes>

@@ -12,7 +12,7 @@ import Navigator from "./Navigator";
 import { useEffect, useState } from "react";
 import Question from "./Question";
 import ProgressBar from "./Progressbar";
-import { Button } from "../components/common/Button";
+import { Button } from "../../components/common/Button";
 
 const API_URL = "/Question.json";
 
