@@ -12,6 +12,7 @@ import Navigator from "./Navigator";
 import { useEffect, useState } from "react";
 import Question from "./Question";
 import ProgressBar from "./Progressbar";
+import { Button } from "../components/common/Button";
 
 const API_URL = "/Question.json";
 
@@ -60,17 +61,17 @@ export default function Asssessment() {
   if (loading) {
     return (
       <div>
-        <div className="animate-pulse">Loading CodeQuest assessment...</div>
+        <div className="animate-pulse">Đang tải CodeQuest cho bạn...</div>
       </div>
     );
   }
   if (quest.length === 0) {
-    return <div>Looking for the questions</div>;
+    return <div>Đang tìm kiếm câu hỏi</div>;
   }
   const isCompleted = answeredCount === totalquest;
 
   return (
-    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17] ">
+    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17] p-4">
       <header className="sticky top-0 z-50 w-full bg-[#050b17]/75 backdrop-blur-md border-b border-(--border) flex p-4">
         <div className="flex-1 flex items-center w-fit gap-3">
           <div className="bg-[#0b2122] w-11 h-11 rounded-2xl flex items-center justify-center border border-[#113b2e]">
@@ -80,10 +81,10 @@ export default function Asssessment() {
         </div>
         <ProgressBar answeredCount={answeredCount} totalquest={totalquest} />
         <div className="flex-1 flex gap-3 justify-end items-center">
-          <button className="flex gap-3">
+          <Button variant="normal" className="flex gap-3 hover:text-white">
             <Save className="w-5 h-5"></Save>
-            <span className="text-[16px] font-semibold">Save Progress</span>
-          </button>
+            <span className="text-[16px] font-semibold">Lưu bài làm</span>
+          </Button>
           <div className="avatar">
             <div className="w-11 h-11 rounded-full border-2 border-[#0fbb85] overflow-hidden">
               <img className="w-full h-full object-cover" />
@@ -92,40 +93,40 @@ export default function Asssessment() {
         </div>
       </header>
 
-      <main className="p-5 flex flex-col gap-11 m-auto">
-        <div className="items-center bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)] border-(--border) rounded-2xl p-4 flex">
+      <main className="p-5 flex flex-col gap-11 m-auto items-center">
+        <div className="items-center bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)] border-(--border) rounded-2xl p-12 flex gap-8">
           <div className="flex-1 text-left w-40%">
-            <h1 className="font-bold! text-3xl! tracking-widest leading-none">
-              Discover Your Coding Level
+            <h1 className="font-bold text-3xl text-white mb-3">
+              Khám phá trình độ lập trình của bạn
             </h1>
-            <p className="">
-              Answer a few DSA and algorithm questions to receive a personalised
-              learning roadmap powered by AI.
+            <p className="text-[16px]">
+              Trả lời một vài câu hỏi DSA và giải thuật để nhận được một lộ
+              trình học tập cá nhân tạo bởi AI.
             </p>
           </div>
           <div className="flex flex-1 justify-end items-center gap-4">
             <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#161d2a] shadow-2xl">
               <Timer className="text-[#50a1fe]"></Timer>
               <div className="flex flex-col text-left justify-center tracking-tight">
-                <span className="text-[12px] leading-none">Est. Time</span>
+                <span className="text-[12px] leading-none">T.gian dự kiến</span>
                 <span className="text-[14px] font-bold text-[#d6d8db]">
-                  10-15 mins
+                  10-15 phút
                 </span>
               </div>
             </div>
             <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#161d2a] shadow-2xl">
               <Target className="text-[#c27aff]"></Target>
               <div className="flex flex-col text-left justify-center tracking-tight">
-                <div className="text-[12px] leading-none">Adaptive</div>
+                <div className="text-[12px] leading-none">Độ khó</div>
                 <div className="text-[14px] font-bold text-[#d6d8db]">
-                  Difficulty
+                  Thích ứng
                 </div>
               </div>
             </div>
             <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#124532] shadow-[0_0_15px_rgba(16,185,129,0.15)]">
               <Zap className="text-[#22c55e]"></Zap>
               <div className="flex flex-col text-left justify-center tracking-tight">
-                <div className="text-[12px] leading-none">Reward</div>
+                <div className="text-[12px] leading-none">Phần thưởng</div>
                 <div className="text-[14px] font-bold text-[#22c55e]">
                   +500 XP
                 </div>
@@ -146,31 +147,33 @@ export default function Asssessment() {
             </div>
             <div className="flex bg-[#0f1523] rounded-b-2xl justify-between items-center px-8 py-3">
               <div>
-                <button
-                  className={`w-fit flex-1 rounded-lg justify-start text-[15px] font-bold px-3 py-1 hover:bg-[#272c39]/50 hover:text-[#fbfbfb] 
-                ${isCompleted ? "bg-[#272c39]/50 text-[#fbfbfb]" : ""}`}
+                <Button
+                  variant={isCompleted ? "primary" : "normal"}
+                  className="w-fit"
                 >
-                  <span>Submit</span>
-                </button>
+                  <span>Nộp bài</span>
+                </Button>
               </div>
 
               <div className="flex gap-3 text-[15px] font-bold">
-                <button
+                <Button
                   onClick={handlePrev}
                   disabled={currentQuest === 1}
-                  className="flex gap-2 items-center px-3 bg-[#272c39] py-1 rounded-lg text-[#fbfbfb]"
+                  variant="secondary"
+                  className="flex gap-2 items-center px-3"
                 >
                   <ArrowLeft className="w-4 h-4"></ArrowLeft>
-                  <span className=" ">Previous</span>
-                </button>
-                <button
+                  <span className=" ">Trước</span>
+                </Button>
+                <Button
                   onClick={handleNext}
                   disabled={currentQuest === totalquest}
-                  className="flex gap-2 items-center px-3 bg-[#1fc366] py-1 rounded-lg text-black"
+                  variant="success"
+                  className="flex gap-2 items-center text-black"
                 >
-                  <span>Next</span>
+                  <span>Sau</span>
                   <ArrowRight className="w-4 h-4"></ArrowRight>
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -178,7 +181,7 @@ export default function Asssessment() {
           <div className="flex flex-col gap-5">
             <div className="bg-[#0b1220] p-5 rounded-2xl flex flex-col gap-3 ">
               <span className="text-[14px] font-bold text-[#fbfbfb] whitespace-nowrap text-left">
-                Question Navigator
+                Câu hỏi
               </span>
               <div className="w-fit">
                 <Navigator
@@ -194,7 +197,7 @@ export default function Asssessment() {
                 <Star className="text-[#22c55e]"></Star>
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-[#fbfbfb]">XP Earned</span>
+                <span className="font-bold text-[#fbfbfb]">XP Nhận được</span>
                 <div className="text-[#22c55e] text-left font-bold">
                   +{50 * answeredCount}
                 </div>

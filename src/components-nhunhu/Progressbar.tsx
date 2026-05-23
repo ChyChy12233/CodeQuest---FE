@@ -12,10 +12,10 @@ export default function ProgressBar({
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center">
-      <div className="flex justify-between items-center w-full text-[14px] font-bold">
-        <span className="">Assessment Progress</span>
+      <div className="flex justify-between items-center w-full text-[14px] font-bold mb-3">
+        <span className="">Tiến độ</span>
         <span className="text-[#1fb558]">
-          {answeredCount}/{totalquest} Questions
+          {answeredCount}/{totalquest} Câu hỏi
         </span>
       </div>
       <div className="w-full h-1.5 bg-(--code-bg) rounded-full overflow-hidden">

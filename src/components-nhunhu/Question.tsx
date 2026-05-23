@@ -47,11 +47,11 @@ export default function Question({
     });
   };
   let levelClass = "rounded-sm text-[14px] px-2 py-0.25 ";
-  if (activeQuest.level === "Medium") {
+  if (activeQuest.level === "Vừa") {
     levelClass += "border border-[#503217] bg-[#231d1b] text-[#ee8006]";
-  } else if (activeQuest.level === "Easy") {
+  } else if (activeQuest.level === "Dễ") {
     levelClass += "border border-[#113b2e] bg-[#0c2324] text-[#22c55e]";
-  } else if (activeQuest.level === "Hard") {
+  } else if (activeQuest.level === "Khó") {
     levelClass += "border border-[#3b1111] bg-[#240c0c] text-[#ef4444]";
   }
   return (
@@ -59,7 +59,7 @@ export default function Question({
       <div className="flex">
         <div className="flex flex-1 gap-4">
           <span className="font-bold text-[15px] text-[#c6cad1] px-2 py-1.5 bg-[#171c2b] h-fit leading-none rounded-lg border border-[#2e333f]">
-            Question {currentQuest}
+            Câu {currentQuest}
           </span>
           <span className={levelClass}>{activeQuest.level}</span>
           <span className="rounded-sm font-semibold text-[14px] px-2 py-px border border-[#1d395f] bg-[#111f35] text-[#4a94e9]">
@@ -70,7 +70,7 @@ export default function Question({
           <Flag className="w-4 h-4"></Flag>
         </button>
       </div>
-      <h2 className="text-left">{formatTitle(activeQuest.title)}</h2>
+      <h2 className="text-left text-white">{formatTitle(activeQuest.title)}</h2>
       <pre className="codeblock">
         <code>{activeQuest.code}</code>
       </pre>

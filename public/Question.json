@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "level": "Medium",
+    "level": "Vừa",
     "category": "Binary Search",
     "title": "Analyze the time complexity of the following code snippet. Assume {n} is the length of the input array.",
     "code": "function findPeakElement(nums) {\n  let left = 0;\n  let right = nums.length - 1;\n  while (left < right) {\n    let mid = Math.floor((left + right) / 2);\n    if (nums[mid] > nums[mid + 1]) {\n      right = mid;\n    } else {\n      left = mid + 1;\n    }\n  }\n  return left;\n}",
