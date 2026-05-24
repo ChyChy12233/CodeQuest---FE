@@ -1,19 +1,12 @@
-import {
-  ArrowLeft,
-  ArrowRight,
-  Code2,
-  Save,
-  Star,
-  Target,
-  Timer,
-  Zap,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Star, Target, Timer, Zap } from "lucide-react";
 import Navigator from "./Navigator";
 import { useEffect, useState } from "react";
 import Question from "./Question";
-import ProgressBar from "./Progressbar";
 import { Button } from "../../components/common/Button";
-
+import Confirm from "./Confirm";
+import { useNavigate } from "react-router";
+import { Header } from "./Header";
+import { Badge } from "../../components/common/Badge";
 const API_URL = "/Question.json";
 
 export default function Asssessment() {
@@ -22,7 +15,22 @@ export default function Asssessment() {
   const answeredCount = Object.keys(ans).length;
   const [quest, setQuest] = useState<[]>([]);
   const [loading, setLoading] = useState(true);
+  const XP = 50 * answeredCount;
+  const navigate = useNavigate();
+  const [loadError, setLoadError] = useState(false);
 
+  /*Popup xác nhận */
+  const [showConfirm, setshowConfirm] = useState(false);
+  const handleSubmit = () => {
+    setshowConfirm(false);
+    navigate("/result", {
+      state: {
+        XP: XP,
+      },
+    });
+  };
+
+  /**Nút bấm */
   const handleSelect = (select: string) => {
     setAns((prev) => ({
       ...prev,
@@ -40,7 +48,7 @@ export default function Asssessment() {
       setCurrentQuest(currentQuest + 1);
     }
   };
-
+  /*Lấy câu hỏi */
   useEffect(() => {
     const fetchQuest = async () => {
       try {
@@ -49,7 +57,8 @@ export default function Asssessment() {
         const data = await res.json();
         setQuest(data);
       } catch (error) {
-        console.error("Error when loading question:", error);
+        console.error("Lỗi khi tải câu hỏi:", {error});
+        setLoadError(true);
       } finally {
         setLoading(false);
       }
@@ -70,28 +79,13 @@ export default function Asssessment() {
   }
   const isCompleted = answeredCount === totalquest;
 
+  if (loadError) {
+    return <Badge variant="error">Error when loading question.</Badge>;
+  }
+
   return (
-    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17] p-4">
-      <header className="sticky top-0 z-50 w-full bg-[#050b17]/75 backdrop-blur-md border-b border-(--border) flex p-4">
-        <div className="flex-1 flex items-center w-fit gap-3">
-          <div className="bg-[#0b2122] w-11 h-11 rounded-2xl flex items-center justify-center border border-[#113b2e]">
-            <Code2 className="text-[#20bd5b]"></Code2>
-          </div>
-          <span className="text-2xl font-bold text-[#ffffff]">CodeQuest</span>
-        </div>
-        <ProgressBar answeredCount={answeredCount} totalquest={totalquest} />
-        <div className="flex-1 flex gap-3 justify-end items-center">
-          <Button variant="normal" className="flex gap-3 hover:text-white">
-            <Save className="w-5 h-5"></Save>
-            <span className="text-[16px] font-semibold">Lưu bài làm</span>
-          </Button>
-          <div className="avatar">
-            <div className="w-11 h-11 rounded-full border-2 border-[#0fbb85] overflow-hidden">
-              <img className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17]">
+      <Header totalquest={totalquest} answeredCount={answeredCount} />
 
       <main className="p-5 flex flex-col gap-11 m-auto items-center">
         <div className="items-center bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)] border-(--border) rounded-2xl p-12 flex gap-8">
@@ -150,6 +144,9 @@ export default function Asssessment() {
                 <Button
                   variant={isCompleted ? "primary" : "normal"}
                   className="w-fit"
+                  onClick={() => {
+                    setshowConfirm(true);
+                  }}
                 >
                   <span>Nộp bài</span>
                 </Button>
@@ -198,14 +195,18 @@ export default function Asssessment() {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-[#fbfbfb]">XP Nhận được</span>
-                <div className="text-[#22c55e] text-left font-bold">
-                  +{50 * answeredCount}
-                </div>
+                <div className="text-[#22c55e] text-left font-bold">+{XP}</div>
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      <Confirm
+        showConfirm={showConfirm}
+        setshowConfirm={setshowConfirm}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }

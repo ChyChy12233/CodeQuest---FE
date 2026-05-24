@@ -2,14 +2,14 @@
 
 :root {
   --bg: #050b17;
-  --card-bg: #081521;
+  --card-bg: #0b1220;
   --code-bg: #0a101f;
   --footer-bg: #0f1523;
   --panel-bg: #0b1220;
   --border: #161d2a;
 
-  --text-h: #ffffff;
-  --text: #90a1af;
+  --text-h: #99a1af;
+  --text: #d6d8db;
 
   --accent: #1fc366;
   --accent-bg: #18442d;

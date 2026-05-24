@@ -1,3 +1,5 @@
+import { Button } from "../../components/common/Button";
+
 type NavigatorProps = {
   totalquest: number;
   currentQuest: number;
@@ -15,7 +17,7 @@ export default function Navigator({
     <div className="grid grid-cols-5 gap-2 w-max justify-items-center">
       {[...Array(totalquest)].map((_, i) => {
         const questionNum = i + 1;
-        let btnClass = "w-11 h-11 px-3 py-2 rounded-lg focus:outline-none ";
+        let btnClass = "w-11 h-11 rounded-lg ";
 
         if (questionNum === currentQuest) {
           btnClass +=
@@ -28,14 +30,15 @@ export default function Navigator({
         }
 
         return (
-          <button
+          <Button
+            variant="normal"
             key={questionNum}
             className={btnClass}
             onClick={() => setCurrentQuest(questionNum)}
             type="button"
           >
             {questionNum}
-          </button>
+          </Button>
         );
       })}
     </div>

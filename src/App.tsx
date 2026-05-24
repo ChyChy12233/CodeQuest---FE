@@ -4,6 +4,7 @@ import { Login } from "./features/auth/components/Login";
 import { SignUp } from "./features/auth/components/SignUp";
 import { CodeEditor } from "./features/editor/components/CodeEditor";
 import Asssessment from "./features/assessment/Assessment";
+import Result from "./features/assessment/Result";
 function App() {
   return (
     <Routes>
@@ -93,6 +94,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/editor" element={<CodeEditor />} />
       <Route path="/assessment" element={<Asssessment />} />
+      <Route path="result" element={<Result />} />
     </Routes>
   );
 }
