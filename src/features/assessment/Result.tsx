@@ -5,6 +5,13 @@ import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import { TopicHeader } from "./TopicHeader";
 import { ICON_MAP } from "./Iconmap";
+
+interface ResultProps {
+  id: string;
+  title: string;
+  description: string;
+  iconType: string;
+}
 export default function Result() {
   const location = useLocation();
   const data = location.state;
@@ -25,7 +32,7 @@ export default function Result() {
         }
         const data = await res.json();
 
-        const formattedData = data.data.map((item: any) => ({
+        const formattedData = data.data.map((item: ResultProps) => ({
           id: item.id,
           title: item.title,
           description: item.description,
