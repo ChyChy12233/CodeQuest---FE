@@ -24,7 +24,7 @@ export const SidebarTask: React.FC = () => {
 
   const learningTask = {
     lessonTitle: "Bài 4: Thao tác với Mảng",
-    topic: "Phương thức .map() trong JavaScript",
+    topic: "Phương thức .map()",
     level: "warning" as const,
     levelLabel: "Cơ bản",
     
@@ -53,7 +53,7 @@ export const SidebarTask: React.FC = () => {
   };
 
   return (
-    <div className="p-6 h-full flex flex-col justify-between select-none bg-zinc-950 text-zinc-100">
+    <div className="p-6 h-full flex flex-col justify-between select-none bg-[#050816] text-zinc-100">
       <div className="space-y-6 overflow-y-auto pr-1">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export const SidebarTask: React.FC = () => {
           <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 space-y-3 text-xs font-mono">
             <div>
               <div className="text-zinc-500 font-bold mb-1">Dữ liệu đầu vào:</div>
-              <pre className="text-zinc-300 bg-zinc-950/50 p-2 rounded border border-zinc-900 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.input}</pre>
+              <pre className="text-zinc-300 bg-[#050816]/50 p-2 rounded border border-zinc-900 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.input}</pre>
             </div>
             <div>
               <div className="text-emerald-400 font-bold mb-1">Kết quả mong đợi:</div>
@@ -140,7 +140,7 @@ export const SidebarTask: React.FC = () => {
                 [Thu gọn]
               </button>
             </div>
-            <pre className="text-xs text-zinc-400 font-mono whitespace-pre-wrap bg-zinc-950/40 p-2.5 rounded border border-zinc-900 leading-relaxed">
+            <pre className="text-xs text-zinc-400 font-mono whitespace-pre-wrap bg-[#050816]/40 p-2.5 rounded border border-zinc-900 leading-relaxed">
               {learningTask.syntaxHint}
             </pre>
           </div>
