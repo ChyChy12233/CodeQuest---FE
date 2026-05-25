@@ -10,10 +10,7 @@ interface ConsoleOutputProps {
 
 export const ConsoleOutput: React.FC<ConsoleOutputProps> = ({
   output,
-  isError,
-  onRunCode,
-  onSubmitCode,
-  isRunning,
+  isError
 }) => {
   return (
     <div className="h-full bg-[#050816] border-t border-zinc-800/80 flex flex-col justify-between">
@@ -31,27 +28,9 @@ export const ConsoleOutput: React.FC<ConsoleOutputProps> = ({
               {output}
             </pre>
           ) : (
-            <span className="text-zinc-600 italic">Ấn "Chạy thử" sau khi bạn làm xong</span>
+            <span className="text-zinc-600 text-2xl italic">KẾt quả sẽ được hiển thị sau khi bạn ấn Run Code</span>
           )}
         </div>
-      </div>
-
-      <div className="p-4 border-t border-zinc-900 bg-[#050816] flex items-center justify-end gap-3 select-none">
-        <button
-          onClick={onRunCode}
-          disabled={isRunning}
-          className="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs font-medium rounded-lg transition-colors disabled:opacity-50"
-        >
-          {isRunning ? 'Đang chạy...' : 'Chạy thử'}
-        </button>
-        
-        <button
-          onClick={onSubmitCode}
-          disabled={isRunning}
-          className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-lg shadow-emerald-950/20 transition-colors disabled:opacity-50"
-        >
-          Nộp bài
-        </button>
       </div>
     </div>
   );

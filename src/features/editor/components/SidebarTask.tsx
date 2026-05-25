@@ -2,13 +2,34 @@ import React, { useState } from 'react';
 import { Badge } from '../../../components/common/Badge';
 import { Button } from '../../../components/common/Button';
 
+type LessonLevel = 'info' | 'warning' | 'success' | 'error';
+
+interface LearningTask {
+  lessonTitle: string;
+  topic: string;
+  level: LessonLevel;
+  concept: string;
+  objective: string;
+  todoList: string[];
+  checkpoint: {
+    input: string;
+    expectedOutput: string;
+  };
+  syntaxHint: string;
+}
+
+const LEVEL_LABELS: Record<LessonLevel, string> = {
+  info: 'Nhập môn',
+  warning: 'Cơ bản',
+  success: 'Nâng cao',
+  error: 'Thử thách',
+};
+
+// regex chuyển toàn bộ chữ trong dấu backticks thành code format
 const renderFormattedText = (text: string) => {
-  // regex tìm dấu `
   const parts = text.split(/(`[^`]+`)/g);
-  
   return parts.map((part, index) => {
     if (part.startsWith('`') && part.endsWith('`')) {
-      // bỏ dấu backtick
       return (
         <code key={index} className="bg-zinc-800 text-amber-400 px-1.5 py-0.5 rounded font-mono text-[11px] border border-zinc-700/50 mx-0.5">
           {part.slice(1, -1)}
@@ -22,11 +43,11 @@ const renderFormattedText = (text: string) => {
 export const SidebarTask: React.FC = () => {
   const [showHint, setShowHint] = useState(false);
 
-  const learningTask = {
+  // phân loại label
+  const learningTask: LearningTask = {
     lessonTitle: "Bài 4: Thao tác với Mảng",
     topic: "Phương thức .map()",
-    level: "warning" as const,
-    levelLabel: "Cơ bản",
+    level: "warning", 
     
     concept: "Phương thức `map()` giúp bạn duyệt qua từng phần tử của một mảng cũ, biến đổi nó và trả về một mảng hoàn toàn mới mà không làm thay đổi mảng ban đầu.",
     
@@ -60,7 +81,9 @@ export const SidebarTask: React.FC = () => {
             <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
               {learningTask.lessonTitle}
             </span>
-            <Badge variant={learningTask.level}>{learningTask.levelLabel}</Badge>
+            <Badge variant={learningTask.level}>
+              {LEVEL_LABELS[learningTask.level]}
+            </Badge>
           </div>
           <h2 className="text-xl font-bold tracking-tight text-zinc-100">
             {learningTask.topic}
@@ -111,7 +134,6 @@ export const SidebarTask: React.FC = () => {
             </div>
           </div>
         </div>
-
       </div>
 
       <div className="mt-6 border-t border-zinc-800/80 pt-4">
