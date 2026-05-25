@@ -2,7 +2,7 @@ import { Button } from "./components/common/Button";
 import { Route, Routes } from "react-router";
 import { Login } from "./features/auth/components/Login";
 import { SignUp } from "./features/auth/components/SignUp";
-import { CodeEditor } from "./features/editor/components/CodeEditor";
+import { CodeLayout } from "./features/editor/components/CodeLayout";
 import Asssessment from "./features/assessment/Assessment";
 import Result from "./features/assessment/Result";
 function App() {
@@ -92,7 +92,7 @@ function App() {
       ></Route>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/editor" element={<CodeEditor />} />
+      <Route path="/editor" element={<CodeLayout />} />
       <Route path="/assessment" element={<Asssessment />} />
       <Route path="result" element={<Result />} />
     </Routes>
