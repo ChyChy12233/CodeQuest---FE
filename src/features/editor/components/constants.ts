@@ -5,7 +5,7 @@ const products = [
   { id: 2, name: "Chuột Gaming", price: 50 }
 ];
 
-function ápDụngKhuyếnMãi(products) {
+function apDungKhuyenMai(products) {
   // Thực hiện: Sử dụng phương thức .map() để nhân đôi giá (price) của từng sản phẩm
   // Viết code của bạn ở đây:
   
@@ -63,5 +63,5 @@ class Solution {
         
         return products;
     }
-}`
+}`,
 };
