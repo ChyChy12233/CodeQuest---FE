@@ -3,38 +3,38 @@ import React from 'react';
 export default function ImprovementReport() {
   return (
     <div className="bg-[#151c2c] border border-gray-800 rounded-xl p-6">
-      <h3 className="text-white font-semibold mb-6">Weekly Improvement Report</h3>
+      <h3 className="text-white font-semibold mb-6">Nhận xét & Gợi ý học tập tuần này</h3>
       
       <div className="space-y-6">
-        {/* Item 1 */}
+        {/* điểm mạnh */}
         <div className="flex gap-3">
           <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
           <div>
-            <h4 className="text-sm font-medium text-white mb-1">Strong Progress in Arrays</h4>
+            <h4 className="text-sm font-medium text-white mb-1">Làm chủ rất tốt các Hàm xử lý mảng</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
-              You solved 5 array problems with 92% efficiency. Your time complexity analysis has improved significantly.
+              Bạn đã viết đúng cú pháp `.map()` và `.filter()` trong 5 bài thực hành liên tiếp mà không bị thiếu dấu ngoặc nhọn. Tốc độ gõ cải thiện đáng kể!
             </p>
           </div>
         </div>
 
-        {/* Item 2 */}
+        {/* điểm yếu */}
         <div className="flex gap-3">
           <div className="w-2 h-2 rounded-full bg-amber-500 mt-1.5 shrink-0" />
           <div>
-            <h4 className="text-sm font-medium text-white mb-1">Practice More: Linked Lists</h4>
+            <h4 className="text-sm font-medium text-white mb-1">Cần chú ý: Hàm mũi tên (Arrow Function)</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Struggled with pointer manipulation. Complete 3 more linked list problems to strengthen this skill.
+              Đôi khi bạn vẫn quên từ khóa `return` khi bọc thân hàm trong dấu ngoặc nhọn `{}`. Hãy thử luyện lại 3 bài tập cơ bản về Arrow Function.
             </p>
           </div>
         </div>
 
-        {/* Item 3 */}
+        {/* điểm cần cải thiện */}
         <div className="flex gap-3">
           <div className="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0" />
           <div>
-            <h4 className="text-sm font-medium text-white mb-1">Thinking Score: Excellent</h4>
+            <h4 className="text-sm font-medium text-white mb-1">Thói quen gõ code: Rất tích cực</h4>
             <p className="text-xs text-gray-400 leading-relaxed">
-              Your approach to breaking down problems is methodical. Keep focusing on optimization patterns.
+              Việc duy trì gõ code đều đặn mỗi ngày đang giúp cơ tay của bạn quen với các ký tự đặc biệt như `{}`, `[]`, `=&gt;`. Tiếp tục phát huy nhé!
             </p>
           </div>
         </div>

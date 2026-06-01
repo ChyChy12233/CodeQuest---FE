@@ -4,70 +4,62 @@ import StatCard from './StatCard';
 import ThinkingScoreChart from './ThinkingScoreChart';
 import SkillRadarChart from './SkillRadarChart';
 import ImprovementReport from './ImprovementReport';
-import Button from '../../../components/common/Button.tsx';
 
 export default function Dashboard() {
   return (
     <div className="bg-[#0b0f19] min-h-screen text-gray-200 font-sans antialiased">
-      {/* Thanh điều hướng phía trên */}
+      {/* navigation bar */}
       <header className="border-b border-gray-800 bg-[#0b0f19]/80 backdrop-blur sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm">
           <span className="text-blue-500 font-bold">&lt;/&gt; CodeQuest</span>
           <span className="text-gray-600">/</span>
           <span className="text-gray-400">Bảng điều khiển</span>
         </div>
-        <Button variant="primary" size="sm">
-          Tiếp tục học tập
-        </Button>
+        <button className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">
+          Học cú pháp tiếp theo
+        </button>
       </header>
 
-      {/* Không gian nội dung chính */}
+      {/* main content */}
       <main className="max-w-7xl mx-auto p-6 md:p-8 space-y-8">
-        {/* Lời chào đầu trang */}
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">Chào mừng trở lại, Lập trình viên!</h1>
-          <p className="text-xs text-gray-400">Dưới đây là tổng quan tiến độ học tập của bạn</p>
+          <h1 className="text-2xl font-bold text-white mb-1">Chào mừng bạn mới, cùng gõ code nào!</h1>
+          <p className="text-xs text-gray-400">Xem lại tiến độ làm chủ các cú pháp của bạn</p>
         </div>
-
-        {/* 1. Chỉ số tổng quan (Stat Cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard 
             icon={<Flame className="w-5 h-5 text-red-500" fill="currentColor" />} 
             value="14" 
-            label="Chuỗi ngày học tập" 
-            subText="Duy trì phong độ nhé! 🔥" 
+            label="Ngày học liên tiếp" 
+            subText="Keep it up bro!" 
             subColor="text-amber-500"
           />
           <StatCard 
             icon={<BarChart3 className="w-5 h-5 text-blue-500" />} 
             value="1,250" 
-            label="Tổng điểm kinh nghiệm (XP)" 
-            subText="+180 tuần này" 
+            label="Điểm tích lũy (XP)" 
+            subText="+180 hôm nay" 
             subColor="text-emerald-500"
           />
           <StatCard 
             icon={<Award className="w-5 h-5 text-amber-500" />} 
             value="Cấp độ 3" 
-            label="Chuyên sâu" 
+            label="Đang quen tay" 
             subText="" 
             progress={65}
           />
           <StatCard 
             icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />} 
             value="23" 
-            label="Bài toán đã giải quyết" 
-            subText="5 bài trong tuần này" 
+            label="Cú pháp đã thuộc lòng" 
+            subText="Mới học thêm 5 lệnh tuần này" 
             subColor="text-gray-500"
           />
         </div>
-
-        {/* 2. Biểu đồ phân tích chuyên sâu */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <ThinkingScoreChart />
           <SkillRadarChart />
         </div>
-
-        {/* 3. Báo cáo đánh giá và cải thiện hiệu suất */}
         <ImprovementReport />
       </main>
     </div>
