@@ -18,20 +18,20 @@ function App() {
 
               <div className="flex gap-4">
                 <Button
-                  variant="primary"
-                  size="lg"
-                  to="/src/features/auth/components/Login.tsx"
-                >
-                  Đăng nhập
-                </Button>
+  variant="primary"
+  size="lg"
+  to="/login"
+>
+  Đăng nhập
+</Button>
 
-                <Button
-                  variant="normal"
-                  size="lg"
-                  to="/src/features/auth/components/SignUp.tsx"
-                >
-                  Đăng ký
-                </Button>
+<Button
+  variant="normal"
+  size="lg"
+  to="/signup"
+>
+  Đăng ký
+</Button>
               </div>
             </nav>
 
@@ -49,9 +49,9 @@ function App() {
                 Think like a Problem Solver, Not a Copy-Paster
               </p>
 
-              <Button variant="primary" size="xlg" to="/assessment">
-                Bắt đầu kiểm tra
-              </Button>
+             <Button variant="primary" size="xlg" to="/login">
+  Bắt đầu kiểm tra
+</Button>
             </section>
 
             {/* Features */}
@@ -94,7 +94,7 @@ function App() {
       <Route path="/signup" element={<SignUp />} />
       <Route path="/editor" element={<CodeLayout />} />
       <Route path="/assessment" element={<Asssessment />} />
-      <Route path="result" element={<Result />} />
+      <Route path="/result" element={<Result />} />
     </Routes>
   );
 }
