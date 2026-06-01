@@ -1,10 +1,10 @@
-import React from 'react';
-import { Flame, BarChart3, Award, CheckCircle2 } from 'lucide-react';
-import StatCard from './StatCard';
-import ThinkingScoreChart from './ThinkingScoreChart';
-import SkillRadarChart from './SkillRadarChart';
-import ImprovementReport from './ImprovementReport';
-import Button from '../../../components/common/Button.tsx';
+import React from "react";
+import { Flame, BarChart3, Award, CheckCircle2 } from "lucide-react";
+import StatCard from "./StatCard";
+import ThinkingScoreChart from "./ThinkingScoreChart";
+import SkillRadarChart from "./SkillRadarChart";
+import ImprovementReport from "./ImprovementReport";
+import { Button } from "../../../components/common/Button.tsx";
 
 export default function Dashboard() {
   return (
@@ -25,38 +25,44 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto p-6 md:p-8 space-y-8">
         {/* Lời chào đầu trang */}
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1">Chào mừng trở lại, Lập trình viên!</h1>
-          <p className="text-xs text-gray-400">Dưới đây là tổng quan tiến độ học tập của bạn</p>
+          <h1 className="text-2xl font-bold text-white mb-1">
+            Chào mừng trở lại, Lập trình viên!
+          </h1>
+          <p className="text-xs text-gray-400">
+            Dưới đây là tổng quan tiến độ học tập của bạn
+          </p>
         </div>
 
         {/* 1. Chỉ số tổng quan (Stat Cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard 
-            icon={<Flame className="w-5 h-5 text-red-500" fill="currentColor" />} 
-            value="14" 
-            label="Chuỗi ngày học tập" 
-            subText="Duy trì phong độ nhé! 🔥" 
+          <StatCard
+            icon={
+              <Flame className="w-5 h-5 text-red-500" fill="currentColor" />
+            }
+            value="14"
+            label="Chuỗi ngày học tập"
+            subText="Duy trì phong độ nhé! 🔥"
             subColor="text-amber-500"
           />
-          <StatCard 
-            icon={<BarChart3 className="w-5 h-5 text-blue-500" />} 
-            value="1,250" 
-            label="Tổng điểm kinh nghiệm (XP)" 
-            subText="+180 tuần này" 
+          <StatCard
+            icon={<BarChart3 className="w-5 h-5 text-blue-500" />}
+            value="1,250"
+            label="Tổng điểm kinh nghiệm (XP)"
+            subText="+180 tuần này"
             subColor="text-emerald-500"
           />
-          <StatCard 
-            icon={<Award className="w-5 h-5 text-amber-500" />} 
-            value="Cấp độ 3" 
-            label="Chuyên sâu" 
-            subText="" 
+          <StatCard
+            icon={<Award className="w-5 h-5 text-amber-500" />}
+            value="Cấp độ 3"
+            label="Chuyên sâu"
+            subText=""
             progress={65}
           />
-          <StatCard 
-            icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />} 
-            value="23" 
-            label="Bài toán đã giải quyết" 
-            subText="5 bài trong tuần này" 
+          <StatCard
+            icon={<CheckCircle2 className="w-5 h-5 text-emerald-500" />}
+            value="23"
+            label="Bài toán đã giải quyết"
+            subText="5 bài trong tuần này"
             subColor="text-gray-500"
           />
         </div>

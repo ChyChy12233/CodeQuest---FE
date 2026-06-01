@@ -1,4 +1,5 @@
 import { Flag } from "lucide-react";
+import { Badge } from "../../components/common/Badge";
 type OptionItem = {
   id: string;
   text: string;
@@ -46,13 +47,14 @@ export default function Question({
       return <span key={index}>{part}</span>;
     });
   };
-  let levelClass = "rounded-sm text-[14px] px-2 py-0.25 ";
+  let levelClass: "warning" | "success" | "error" | "info" | undefined =
+    undefined;
   if (activeQuest.level === "Vừa") {
-    levelClass += "border border-[#503217] bg-[#231d1b] text-[#ee8006]";
+    levelClass = "warning";
   } else if (activeQuest.level === "Dễ") {
-    levelClass += "border border-[#113b2e] bg-[#0c2324] text-[#22c55e]";
+    levelClass = "success";
   } else if (activeQuest.level === "Khó") {
-    levelClass += "border border-[#3b1111] bg-[#240c0c] text-[#ef4444]";
+    levelClass = "error";
   }
   return (
     <div className="flex flex-col gap-8">
@@ -61,7 +63,7 @@ export default function Question({
           <span className="font-bold text-[15px] text-[#c6cad1] px-2 py-1.5 bg-[#171c2b] h-fit leading-none rounded-lg border border-[#2e333f]">
             Câu {currentQuest}
           </span>
-          <span className={levelClass}>{activeQuest.level}</span>
+          <Badge variant={levelClass}>{activeQuest.level}</Badge>
           <span className="rounded-sm font-semibold text-[14px] px-2 py-px border border-[#1d395f] bg-[#111f35] text-[#4a94e9]">
             {activeQuest.category}
           </span>
