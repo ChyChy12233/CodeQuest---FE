@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 import { Login } from "./features/auth/components/Login";
 import { SignUp } from "./features/auth/components/SignUp";
 import { CodeLayout } from "./features/editor/components/CodeLayout";
+import Dashboard from "./features/dashboard/components/Dashboard";
 import Asssessment from "./features/assessment/Assessment";
 import Result from "./features/assessment/Result";
 function App() {
@@ -95,6 +96,7 @@ function App() {
       <Route path="/editor" element={<CodeLayout />} />
       <Route path="/assessment" element={<Asssessment />} />
       <Route path="/result" element={<Result />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
