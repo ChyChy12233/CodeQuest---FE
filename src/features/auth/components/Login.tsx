@@ -10,9 +10,6 @@ export function Login() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-blue-400">CodeQuest</h1>
           <p className="text-gray-400 mt-2">I Code, I Think, I Conquer</p>
-          <p className="text-yellow-400 text-sm mt-3">
-  Vui lòng đăng nhập để thực hiện bài đánh giá trình độ.
-</p>
         </div>
 
         {/* Tab */}

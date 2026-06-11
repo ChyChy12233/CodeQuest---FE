@@ -25,7 +25,7 @@ export const Select: React.FC<SelectProps> = ({
       )}
       <div className="relative inline-block w-full">
         <select
-          className={`appearance-none w-full bg-zinc-900 text-zinc-300 text-xs font-medium rounded-md border border-zinc-800 px-3 py-1.5 pr-8 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 cursor-pointer transition-all ${className}`}
+          className={`appearance-none w-full bg-zinc-900 text-zinc-300 text-xs font-medium rounded-md border-zinc-800 px-3 py-1.5 pr-8 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 cursor-pointer transition-all ${className}`}
           {...props}
         >
           {options.map((option) => (

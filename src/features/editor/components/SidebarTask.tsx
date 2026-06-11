@@ -31,7 +31,7 @@ const renderFormattedText = (text: string) => {
   return parts.map((part, index) => {
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={index} className="bg-zinc-800 text-amber-400 px-1.5 py-0.5 rounded font-mono text-[11px] border border-zinc-700/50 mx-0.5">
+        <code key={index} className=" px-1.5 py-0.5 rounded font-mono text-[11px] border-zinc-700/50 mx-0.5">
           {part.slice(1, -1)}
         </code>
       );
@@ -90,29 +90,23 @@ export const SidebarTask: React.FC = () => {
           </h2>
         </div>
 
-        <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-4 text-xs text-zinc-300 leading-relaxed">
-          <span className="font-bold text-zinc-200 block mb-1">💡 Kiến thức cốt lõi:</span>
+        <div className="bg-zinc-900/40 border-zinc-800/60 rounded-xl p-4 text-xs text-zinc-300 leading-relaxed">
           {renderFormattedText(learningTask.concept)}
         </div>
 
         <div className="space-y-3">
           <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-            Nhiệm vụ của bạn
+            Nhiệm vụ
           </h3>
           <p className="text-zinc-300 text-sm leading-relaxed">
             {renderFormattedText(learningTask.objective)}
           </p>
           
-          <ul className="space-y-2 mt-2 bg-zinc-900/20 border border-zinc-900/80 rounded-xl p-3">
+          <ul className="space-y-2 mt-2 rounded-xl p-3">
+            <p>Các yêu cầu cần có:</p>
             {learningTask.todoList.map((todo, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-xs text-zinc-400">
-                <input 
-                  type="checkbox" 
-                  disabled 
-                  className="mt-0.5 w-3.5 h-3.5 rounded border-zinc-700 bg-zinc-800 text-emerald-500 focus:ring-0 focus:ring-offset-0" 
-                />
-                <span>{renderFormattedText(todo)}</span>
+              <li key={idx} className="flex items-start gap-2 text-xs">
+                <span>{idx + 1}. {renderFormattedText(todo)}</span>
               </li>
             ))}
           </ul>
@@ -120,17 +114,16 @@ export const SidebarTask: React.FC = () => {
 
         <div className="space-y-3">
           <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
-            Kết quả kiểm tra thử
+            Kết quả kiểm tra
           </h3>
-          <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-xl p-4 space-y-3 text-xs font-mono">
+          <div className="bg-zinc-900/60 border-zinc-800/80 rounded-xl p-4 space-y-3 text-xs font-mono">
             <div>
-              <div className="text-zinc-500 font-bold mb-1">Dữ liệu đầu vào:</div>
-              <pre className="text-zinc-300 bg-[#050816]/50 p-2 rounded border border-zinc-900 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.input}</pre>
+              <div className="text-zinc-500 font-bold mb-1">Input:</div>
+              <pre className="text-zinc-300 bg-[#050816]/50 p-2 rounded border-zinc-900 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.input}</pre>
             </div>
             <div>
-              <div className="text-emerald-400 font-bold mb-1">Kết quả mong đợi:</div>
-              <pre className="text-emerald-300 bg-emerald-950/10 p-2 rounded border border-emerald-900/30 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.expectedOutput}</pre>
+              <div className="text-emerald-400 font-bold mb-1">Expected output:</div>
+              <pre className="text-emerald-300 bg-emerald-950/10 p-2 rounded border-emerald-900/30 overflow-x-auto whitespace-pre-wrap">{learningTask.checkpoint.expectedOutput}</pre>
             </div>
           </div>
         </div>
@@ -147,22 +140,22 @@ export const SidebarTask: React.FC = () => {
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
-            Gợi ý cú pháp (Hint)
+            Hint gợi ý
           </Button>
         ) : (
-          <div className="bg-amber-500/5 border border-amber-500/10 rounded-xl p-4 space-y-2 animate-fadeIn">
+          <div className="bg-amber-500/5 border-amber-500/10 rounded-xl p-4 space-y-2 animate-fadeIn">
             <div className="flex justify-between items-center">
               <span className="text-xs font-bold text-amber-400 flex items-center gap-1">
-                💡 Cấu trúc code mẫu
+                Cấu trúc code
               </span>
               <button 
                 onClick={() => setShowHint(false)} 
                 className="text-zinc-500 hover:text-zinc-300 text-xs font-mono transition-colors"
               >
-                [Thu gọn]
+                [Hide]
               </button>
             </div>
-            <pre className="text-xs text-zinc-400 font-mono whitespace-pre-wrap bg-[#050816]/40 p-2.5 rounded border border-zinc-900 leading-relaxed">
+            <pre className="text-xs text-zinc-400 font-mono whitespace-pre-wrap bg-[#050816]/40 p-2.5 rounded border-zinc-900 leading-relaxed">
               {learningTask.syntaxHint}
             </pre>
           </div>

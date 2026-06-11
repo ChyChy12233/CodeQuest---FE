@@ -26,7 +26,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     // nút phụ
     secondary:
-      "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border border-zinc-700 focus:ring-zinc-600 cursor-pointer",
+      "bg-zinc-800 hover:bg-zinc-700 text-zinc-300 border-zinc-700 focus:ring-zinc-600 cursor-pointer",
 
     // run code
     success:
@@ -34,7 +34,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     // nút đăng nhập bằng phương thức khác
     oauth:
-      "bg-zinc-800/60 hover:bg-zinc-800 text-zinc-300 border border-zinc-700/80 w-full justify-center gap-2",
+      "bg-zinc-800/60 hover:bg-zinc-800 text-zinc-300 border-zinc-700/80 w-full justify-center gap-2",
 
     // nút không nền
     normal: "cursor-pointer hover:scale-105",

@@ -57,7 +57,7 @@ function App() {
 
             {/* Features */}
             <section className="grid md:grid-cols-3 gap-8 px-10 mt-28 pb-20">
-              <div className="bg-[#111827] p-8 rounded-2xl border border-gray-800 hover:border-blue-500 transition">
+              <div className="bg-[#111827] p-8 rounded-2xl border-gray-800 hover:border-blue-500 transition">
                 <h3 className="text-2xl font-bold text-blue-400 mb-4">
                   AI Thinking Mirror
                 </h3>
@@ -68,7 +68,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="bg-[#111827] p-8 rounded-2xl border border-gray-800 hover:border-blue-500 transition">
+              <div className="bg-[#111827] p-8 rounded-2xl border-gray-800 hover:border-blue-500 transition">
                 <h3 className="text-2xl font-bold text-blue-400 mb-4">
                   Dynamic Roadmap
                 </h3>
