@@ -2,7 +2,7 @@ import React, { type ButtonHTMLAttributes } from "react";
 import { Link } from "react-router";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "success" | "oauth" | "normal";
+  variant?: "primary" | "secondary" | "success" | "oauth" | "normal" | "thirdary";
   size?: "sm" | "md" | "lg" | "xlg";
   children: React.ReactNode;
   to?: string;
@@ -30,7 +30,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     // run code
     success:
-      "bg-emerald-600 hover:bg-emerald-500 text-white font-semibold focus:ring-emerald-500",
+      "bg-emerald-600 hover:bg-emerald-500 text-white font-semibold focus:ring-emerald-500 cursor-pointer",
 
     // nút đăng nhập bằng phương thức khác
     oauth:
@@ -38,6 +38,10 @@ export const Button: React.FC<ButtonProps> = ({
 
     // nút không nền
     normal: "cursor-pointer hover:scale-105",
+
+    // nút vàng
+    thirdary:
+      "bg-amber-600 hover:bg-amber-500 text-black focus:ring-amber-500 shadow-md shadow-amber-900/20 cursor-pointer hover:scale-105",
   };
 
   const sizes = {

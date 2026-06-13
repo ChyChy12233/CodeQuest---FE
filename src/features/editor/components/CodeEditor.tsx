@@ -17,6 +17,7 @@ interface CodeEditorProps {
   onLanguageChange: (lang: string) => void;
   onResetCode: () => void;
   onRunCode: () => void;
+  onSubmitCode: () => void;
   isRunning: boolean;
 }
 
@@ -27,6 +28,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
   onLanguageChange,
   onResetCode,
   onRunCode,
+  onSubmitCode,
   isRunning,
 }) => {
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -54,8 +56,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
           >
             Reset
           </Button>
+
           <Button
-            variant="success"
+            variant="thirdary"
             size="sm"
             onClick={onRunCode}
             disabled={isRunning}
@@ -66,12 +69,22 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
             </svg>
             {isRunning ? "Running..." : "Run Code"}
           </Button>
+
+          <Button
+            variant="success"
+            size="sm"
+            onClick={onSubmitCode}
+            className="gap-1.5 font-semibold"
+          >
+            Submit Code
+          </Button>
+
         </div>
       </div>
       <div className="flex-1 h-full relative bg-[#0f1422]/40 pt-2">
         <div className="absolute inset-0 w-full h-full">
           <Editor
-            height="100%" 
+            height="100%"
             language={language}
             value={code}
             theme="vs-dark"
