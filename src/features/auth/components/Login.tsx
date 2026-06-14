@@ -12,15 +12,6 @@ export function Login() {
           <p className="text-gray-400 mt-2">I Code, I Think, I Conquer</p>
         </div>
 
-        {/* Tab */}
-        <div className="flex mb-6 bg-[#1f2937] rounded-lg p-1">
-          <button className="flex-1 bg-green-500 text-white py-2 rounded-md">
-            Đăng nhập
-          </button>
-          <Link to="/signup" className="flex-1 text-center py-2 text-gray-400">
-            Đăng ký
-          </Link>
-        </div>
         {/* Email */}
         <div className="mb-4">
           <label className="block text-sm mb-2">Email</label>

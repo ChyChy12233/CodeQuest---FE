@@ -89,7 +89,6 @@ export default function Result() {
           </div>
           <div className="bg-(--card-bg) p-5 rounded-2xl">
             <span className="text-white font-semibold">Skill radar</span>
-            <></>
           </div>
         </div>
         <div className="bg-(--card-bg) h-fit p-5">

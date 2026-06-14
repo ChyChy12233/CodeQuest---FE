@@ -19,20 +19,6 @@ export function SignUp() {
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex mb-6 bg-[#1f2937] rounded-lg p-1">
-          <Link
-            to="/login"
-            className="flex-1 text-center py-2 text-gray-400"
-          >
-            Đăng nhập
-          </Link>
-
-          <button className="flex-1 bg-green-500 text-white py-2 rounded-md">
-            Đăng ký
-          </button>
-        </div>
-
         {/* Họ tên */}
         <div className="mb-4">
           <label className="block text-sm mb-2">
