@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router";
 import { Login } from "./features/auth/components/Login";
 import { SignUp } from "./features/auth/components/SignUp";
 import { CodeLayout } from "./features/editor/components/CodeLayout";
+import { NavBar } from "./features/NavBar";
+import RoadmapPage from "./features/roadmap/components/RoadmapPage";
 import Dashboard from "./features/dashboard/components/Dashboard";
 import Asssessment from "./features/assessment/Assessment";
 import Result from "./features/assessment/Result";
@@ -14,27 +16,7 @@ function App() {
         element={
           <div className="min-h-screen bg-[#050816] text-white">
             {/* Navbar */}
-            <nav className="flex justify-between items-center px-10 py-5 border-b border-gray-800">
-              <h1 className="text-2xl font-bold text-blue-400">CodeQuest</h1>
-
-              <div className="flex gap-4">
-                <Button
-  variant="primary"
-  size="lg"
-  to="/login"
->
-  Đăng nhập
-</Button>
-
-<Button
-  variant="normal"
-  size="lg"
-  to="/signup"
->
-  Đăng ký
-</Button>
-              </div>
-            </nav>
+            <NavBar isLoggedIn={false} />
 
             {/* Hero Section */}
             <section className="flex flex-col items-center justify-center text-center mt-28 px-6">
@@ -50,9 +32,9 @@ function App() {
                 Think like a Problem Solver, Not a Copy-Paster
               </p>
 
-             <Button variant="primary" size="xlg" to="/login">
-  Bắt đầu kiểm tra
-</Button>
+              <Button variant="primary" size="xlg" to="/roadmap">
+                Bắt đầu kiểm tra
+              </Button>
             </section>
 
             {/* Features */}
@@ -97,6 +79,7 @@ function App() {
       <Route path="/assessment" element={<Asssessment />} />
       <Route path="/result" element={<Result />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/roadmap" element={<RoadmapPage />} />
     </Routes>
   );
 }
