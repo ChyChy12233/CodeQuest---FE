@@ -1,15 +1,12 @@
 import { Flag } from "lucide-react";
-import { Badge } from "../../components/common/Badge";
 export type OptionItem = {
   id: string;
   text: string;
 };
 export type QuestionItem = {
   id: number;
-  level: string;
   title: string;
   code?: string;
-  category: string;
   type?: "multiple-choice" | "essay";
   options?: OptionItem[];
 };
@@ -19,6 +16,8 @@ type QuestionProps = {
   handleNext: () => void;
   currentQuest: number;
   selectedAns: string;
+  flag: boolean;
+  setFlag: () => void;
 };
 
 export default function Question({
@@ -27,6 +26,8 @@ export default function Question({
   handleNext,
   selectedAns,
   currentQuest,
+  flag,
+  setFlag,
 }: QuestionProps) {
   if (!activeQuest) return null;
 
@@ -48,15 +49,6 @@ export default function Question({
       return <span key={index}>{part}</span>;
     });
   };
-  let levelClass: "warning" | "success" | "error" | "info" | undefined =
-    undefined;
-  if (activeQuest.level === "Vừa") {
-    levelClass = "warning";
-  } else if (activeQuest.level === "Dễ") {
-    levelClass = "success";
-  } else if (activeQuest.level === "Khó") {
-    levelClass = "error";
-  }
 
   const isEssay = activeQuest.type === "essay";
   return (
@@ -66,12 +58,11 @@ export default function Question({
           <span className="font-bold text-[15px] text-[#c6cad1] px-2 py-1.5 bg-[#171c2b] h-fit leading-none rounded-lg border border-[#2e333f]">
             Câu {currentQuest}
           </span>
-          <Badge variant={levelClass}>{activeQuest.level}</Badge>
-          <span className="rounded-sm font-semibold text-[14px] px-2 py-px border border-[#1d395f] bg-[#111f35] text-[#4a94e9]">
-            {activeQuest.category}
-          </span>
         </div>
-        <button>
+        <button
+          onClick={setFlag}
+          className={`${flag ? "border-orange-500/50 text-orange-500" : ""}`}
+        >
           <Flag className="w-4 h-4"></Flag>
         </button>
       </div>

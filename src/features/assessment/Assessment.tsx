@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import Question from "./Question";
 import { Button } from "../../components/common/Button";
 import Confirm from "./Confirm";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { Badge } from "../../components/common/Badge";
 import type { QuestionItem } from "./Question";
-const API_URL = "";
+const API_URL = "Question.json";
 
 export default function Asssessment() {
   const [currentQuest, setCurrentQuest] = useState(1);
@@ -21,11 +21,30 @@ export default function Asssessment() {
   const [loadError, setLoadError] = useState(false);
   const totalquest = quest.length;
   const activeQuest = quest[currentQuest - 1];
+  /*Flag*/
+  const [flag, setFlag] = useState<number[]>([]);
+
+  const handleFlag = (id: number) => {
+    setFlag((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((questId) => questId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
 
   /*Popup xác nhận */
   const [showConfirm, setshowConfirm] = useState(false);
   const handleSubmit = async () => {
-    const payload = { answers: ans };
+    const userCodeOutput = quest.map((_, index) => {
+      const questNo = index + 1;
+      return ans[questNo] || "";
+    });
+    const payload = {
+      challengeId: challengeId,
+      userCodeOutput: userCodeOutput,
+    };
     const response = await fetch(`${API_URL}/assessment/submissions`, {
       method: "POST",
       headers: {
@@ -61,13 +80,36 @@ export default function Asssessment() {
       setCurrentQuest(currentQuest + 1);
     }
   };
+
+  const [searchParams] = useSearchParams();
+  const challengeId = searchParams.get("challengeId");
+
   /*Lấy câu hỏi */
   useEffect(() => {
     const fetchQuest = async () => {
+      // if (!challengeId) {
+      //   console.error("Không tìm thấy mã bài thi (challengeId) trên URL!");
+      //   setLoadError(true);
+      //   setLoading(false);
+      //   return;
+      // }
       try {
         setLoading(true);
-        const res = await fetch(`${API_URL}/assessment/questions`);
+        const res = await fetch(
+          API_URL,
+          // `${API_URL}/assessment/questions?challengeId=${challengeId}`,
+        );
+
+        if (!res.ok) throw new Error("Lỗi khi tải dữ liệu từ Server");
         const data = await res.json();
+        // const formattedQuest = data.questions.map((q: any, index: number) => ({
+        //   id: q._id || index + 1,
+        //   title: q.input || "Không có tiêu đề",
+        //   type: q.type,
+        //   options: q.options || [],
+        //   code: "",
+        // }));
+        // setQuest(formattedQuest);
         setQuest(data);
       } catch (error) {
         console.error("Lỗi khi tải câu hỏi:", { error });
@@ -153,6 +195,8 @@ export default function Asssessment() {
                 handleNext={handleNext}
                 handleSelect={handleSelect}
                 currentQuest={currentQuest}
+                flag={flag.includes(activeQuest.id)}
+                setFlag={() => handleFlag(activeQuest.id)}
               />
             </div>
             <div className="flex bg-[#0f1523] rounded-b-2xl justify-between items-center px-8 py-3">
@@ -202,6 +246,7 @@ export default function Asssessment() {
                   currentQuest={currentQuest}
                   setCurrentQuest={setCurrentQuest}
                   ans={ans}
+                  flag={flag}
                 />
               </div>
             </div>

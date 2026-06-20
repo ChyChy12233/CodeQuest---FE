@@ -1,51 +1,58 @@
 import { useLocation } from "react-router";
 import { NavBar } from "../NavBar";
-import { Award, Sparkles, Zap } from "lucide-react";
+import { Award, Sparkles, Zap, Target, TrendingUp } from "lucide-react";
 import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
 import { TopicHeader } from "./TopicHeader";
-import { ICON_MAP } from "./Iconmap";
 
-interface ResultProps {
-  id: string;
+interface GenerationParams {
+  detectedLevel?: string;
+  weakSkills?: string[];
+  strongSkills?: string[];
+  pacePreference?: "slow" | "medium" | "fast";
+}
+interface RoadmapItem {
+  userId: string;
+  templateId: string;
   title: string;
-  description: string;
-  iconType: string;
+  status: "active" | "inactive" | string;
+  totalNodes: number;
+  completedNodes: number;
+  generationParams: GenerationParams;
 }
 export default function Result() {
   const location = useLocation();
   const data = location.state;
-  const [topicData, setTopicData] = useState([
-    {
-      id: "loading-1",
-      title: "Đang tải...",
-      description: "Vui lòng chờ trong giây lát...",
-      icon: "default",
-    },
-  ]);
+  const [activeRoadmap, setActiveRoadmap] = useState<RoadmapItem | null>(null);
+  const [loadingRoadmap, setLoadingRoadmap] = useState(true);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchRoadmap = async () => {
       try {
-        const res = await fetch("topics-api-mock.json");
+        const token = localStorage.getItem("token");
+        const API_URL = "";
+        const res = await fetch(`${API_URL}/roadmaps/me`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!res.ok) {
-          throw new Error("Không thể kết nối với server");
+          throw new Error("Không thể tải lộ trình học tập");
         }
-        const data = await res.json();
-
-        const formattedData = data.data.map((item: ResultProps) => ({
-          id: item.id,
-          title: item.title,
-          description: item.description,
-          icon: item.iconType,
-        }));
-
-        setTopicData(formattedData);
+        const data: RoadmapItem[] = await res.json();
+        const active = data.find((item) => item.status === "active");
+        if (active) {
+          setActiveRoadmap(active);
+        }
       } catch (error) {
         console.error("Lỗi khi fetch API:", error);
+      } finally {
+        setLoadingRoadmap(false);
       }
     };
 
-    fetchData();
+    fetchRoadmap();
   }, []);
   return (
     <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17]">
@@ -104,15 +111,54 @@ export default function Result() {
             </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
-            {topicData.map((item) => (
-              <TopicHeader
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                description={item.description}
-                icon={ICON_MAP[item.icon] || ICON_MAP["default"]}
-              />
-            ))}
+            {loadingRoadmap ? (
+              <div className="col-span-3 text-center py-10 text-slate-500 text-sm">
+                Đang tải dữ liệu năng lực từ hệ thống...
+              </div>
+            ) : activeRoadmap?.generationParams ? (
+              <>
+                <TopicHeader
+                  id="overview"
+                  title="Đánh giá tổng quan"
+                  description={`Hệ thống xác định trình độ hiện tại của bạn là ${
+                    activeRoadmap.generationParams.detectedLevel || "Chưa rõ"
+                  }. Nhịp độ học tập tối ưu được đề xuất cho bạn là: ${
+                    activeRoadmap.generationParams.pacePreference === "fast"
+                      ? "Cấp tốc (Fast)"
+                      : activeRoadmap.generationParams.pacePreference === "slow"
+                        ? "Thong thả (Slow)"
+                        : "Tiêu chuẩn (Medium)"
+                  }.`}
+                  icon={<Target className="w-7 h-7 text-blue-400" />}
+                />
+                <TopicHeader
+                  id="strong-skills"
+                  title="Kỹ năng vững chắc"
+                  description={
+                    activeRoadmap.generationParams.strongSkills &&
+                    activeRoadmap.generationParams.strongSkills.length > 0
+                      ? `Chúc mừng! Bạn vượt qua tốt các bài kiểm tra thuộc mảng kiến thức: ${activeRoadmap.generationParams.strongSkills.join(", ")}. Hãy tiếp tục phát huy ưu thế này.`
+                      : "Hệ thống chưa ghi nhận thế mạnh vượt trội đáng kể, hãy tích lũy thêm bài tập để nâng cấp chỉ số."
+                  }
+                  icon={<Zap className="w-5 h-5 text-emerald-400" />}
+                />
+                <TopicHeader
+                  id="weak-skills"
+                  title="Trọng tâm cải thiện"
+                  description={
+                    activeRoadmap.generationParams.weakSkills &&
+                    activeRoadmap.generationParams.weakSkills.length > 0
+                      ? `Các điểm cần cải thiện bao gồm: ${activeRoadmap.generationParams.weakSkills.join(", ")}. Các module tiếp theo của lộ trình học sẽ được thiết kế để tập trung khắc phục phần này.`
+                      : "Tuyệt vời! Bạn có nền tảng rất đều và không bị hổng kiến thức lõi nào trong bài đánh giá này."
+                  }
+                  icon={<TrendingUp className="w-5 h-5 text-amber-400" />}
+                />
+              </>
+            ) : (
+              <div className="col-span-3 text-slate-400 text-center py-4">
+                Đang phân tích dữ liệu cấu trúc lộ trình của bạn...
+              </div>
+            )}
           </div>
         </div>
         <Button size="lg" className="text-[#0a101f]" to="/dashboard">
