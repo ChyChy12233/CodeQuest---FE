@@ -11,5 +11,20 @@
       { "id": "C", "text": "O(n) - Linear time" },
       { "id": "D", "text": "O(n log n) - Linearithmic time" }
     ]
+  },
+  {
+    "id": 2,
+    "level": "Khó",
+    "category": "Recursion",
+    "type": "essay",
+    "title": "Explain the concept of a {base case} in recursive functions. What would happen if we remove line 2 from the following code?",
+    "code": "function fibonacci(n) {\n  if (n <= 1) return n;\n  return fibonacci(n - 1) + fibonacci(n - 2);\n}"
+  },
+  {
+    "id": 3,
+    "level": "Dễ",
+    "category": "System Design",
+    "type": "essay",
+    "title": "Hãy giải thích ngắn gọn sự khác biệt giữa kiến trúc {Monolithic} và {Microservices}. Theo bạn, khi nào một dự án nên bắt đầu chuyển từ Monolithic sang Microservices?"
   }
 ]

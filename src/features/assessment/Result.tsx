@@ -1,5 +1,5 @@
 import { useLocation } from "react-router";
-import { Header } from "./Header";
+import { NavBar } from "../NavBar";
 import { Award, Sparkles, Zap } from "lucide-react";
 import { Button } from "../../components/common/Button";
 import { useEffect, useState } from "react";
@@ -48,8 +48,8 @@ export default function Result() {
     fetchData();
   }, []);
   return (
-    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17] px-4">
-      <Header showProgressBar={false} showSave={false} />
+    <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17]">
+      <NavBar variant="quiz" showProgressBar={false} showSave={false} />
       <main className="p-5 flex flex-col gap-11 m-auto items-center">
         <div className="flex flex-col justify-center items-center gap-5">
           <div className="w-fit h-fit p-5 bg-[#0b3026] rounded-2xl border border-(--accent-border) shadow-[0_0_25px_rgba(16,185,129,0.15)]">
@@ -91,7 +91,7 @@ export default function Result() {
             <span className="text-white font-semibold">Skill radar</span>
           </div>
         </div>
-        <div className="bg-(--card-bg) h-fit p-5">
+        <div className="bg-(--card-bg) h-fit p-5 rounded-2xl max-w-6xl">
           <div className="flex justify-between">
             <div className="flex gap-3 items-center">
               <Sparkles className="text-violet-500"></Sparkles>
@@ -99,7 +99,9 @@ export default function Result() {
                 Roadmap đề xuất của CodeQuest AI
               </span>
             </div>
-            <Button variant="secondary">Xem toàn bộ Lộ trình</Button>
+            <Button variant="secondary" to="/roadmap">
+              Xem toàn bộ Lộ trình
+            </Button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
             {topicData.map((item) => (
@@ -113,7 +115,7 @@ export default function Result() {
             ))}
           </div>
         </div>
-        <Button size="lg" className="text-[#0a101f]">
+        <Button size="lg" className="text-[#0a101f]" to="/dashboard">
           Go to Dashboard
         </Button>
       </main>

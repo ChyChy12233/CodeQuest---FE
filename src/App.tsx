@@ -33,7 +33,7 @@ function App() {
                 Think like a Problem Solver, Not a Copy-Paster
               </p>
 
-              <Button variant="primary" size="xlg" to="/roadmap">
+              <Button variant="primary" size="xlg" to="/assessment">
                 Bắt đầu kiểm tra
               </Button>
             </section>

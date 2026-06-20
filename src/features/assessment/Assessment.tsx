@@ -1,27 +1,40 @@
 import { ArrowLeft, ArrowRight, Star, Target, Timer, Zap } from "lucide-react";
+import { NavBar } from "../NavBar";
 import Navigator from "./Navigator";
 import { useEffect, useState } from "react";
 import Question from "./Question";
 import { Button } from "../../components/common/Button";
 import Confirm from "./Confirm";
 import { useNavigate } from "react-router";
-import { Header } from "./Header";
 import { Badge } from "../../components/common/Badge";
-const API_URL = "/Question.json";
+import type { QuestionItem } from "./Question";
+const API_URL = "";
 
 export default function Asssessment() {
   const [currentQuest, setCurrentQuest] = useState(1);
   const [ans, setAns] = useState<Record<number, string>>({});
   const answeredCount = Object.keys(ans).length;
-  const [quest, setQuest] = useState<[]>([]);
+  const [quest, setQuest] = useState<QuestionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const XP = 50 * answeredCount;
   const navigate = useNavigate();
   const [loadError, setLoadError] = useState(false);
+  const totalquest = quest.length;
+  const activeQuest = quest[currentQuest - 1];
 
   /*Popup xác nhận */
   const [showConfirm, setshowConfirm] = useState(false);
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const payload = { answers: ans };
+    const response = await fetch(`${API_URL}/assessment/submissions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!response.ok) throw new Error("Lỗi nộp bài");
     setshowConfirm(false);
     navigate("/result", {
       state: {
@@ -31,10 +44,10 @@ export default function Asssessment() {
   };
 
   /**Nút bấm */
-  const handleSelect = (select: string) => {
+  const handleSelect = (answer: string) => {
     setAns((prev) => ({
       ...prev,
-      [currentQuest]: select,
+      [activeQuest.id]: answer,
     }));
   };
   const handlePrev = () => {
@@ -53,11 +66,11 @@ export default function Asssessment() {
     const fetchQuest = async () => {
       try {
         setLoading(true);
-        const res = await fetch(API_URL);
+        const res = await fetch(`${API_URL}/assessment/questions`);
         const data = await res.json();
         setQuest(data);
       } catch (error) {
-        console.error("Lỗi khi tải câu hỏi:", {error});
+        console.error("Lỗi khi tải câu hỏi:", { error });
         setLoadError(true);
       } finally {
         setLoading(false);
@@ -65,8 +78,7 @@ export default function Asssessment() {
     };
     fetchQuest();
   }, []);
-  const totalquest = quest.length;
-  const activeQuest = quest[currentQuest - 1];
+
   if (loading) {
     return (
       <div>
@@ -85,9 +97,13 @@ export default function Asssessment() {
 
   return (
     <div className="w-full mx-auto min-h-screen flex flex-col bg-[#050b17]">
-      <Header totalquest={totalquest} answeredCount={answeredCount} />
+      <NavBar
+        variant="quiz"
+        totalquest={totalquest}
+        answeredCount={answeredCount}
+      />
 
-      <main className="p-5 flex flex-col gap-11 m-auto items-center">
+      <main className="max-w-6xl p-5 flex flex-col gap-11 m-auto items-center">
         <div className="items-center bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)] border-(--border) rounded-2xl p-12 flex gap-8">
           <div className="flex-1 text-left w-40%">
             <h1 className="font-bold text-3xl text-white mb-3">
@@ -128,11 +144,11 @@ export default function Asssessment() {
             </div>
           </div>
         </div>
-        <div className="flex gap-5">
-          <div className="pt-1 rounded-2xl bg-linear-to-r from-[#2783ff] to-[#1fc366]">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6 w-full items-start">
+          <div className="lg:col-span-2 min-w-0 w-full pt-1 rounded-2xl bg-linear-to-r from-[#2783ff] to-[#1fc366]">
             <div className="p-8 bg-[#0a101f] rounded-t-2xl flex flex-col gap-5">
               <Question
-                selectedAns={ans[currentQuest]}
+                selectedAns={ans[activeQuest.id] || ""}
                 activeQuest={activeQuest}
                 handleNext={handleNext}
                 handleSelect={handleSelect}

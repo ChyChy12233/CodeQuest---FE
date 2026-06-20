@@ -1,12 +1,24 @@
 import React from "react";
 import { Button } from "../components/common/Button";
-import { ChevronDown, LayoutDashboard, Map, LogOut, User } from "lucide-react";
+import {
+  ChevronDown,
+  LayoutDashboard,
+  Map,
+  LogOut,
+  User,
+  Save,
+} from "lucide-react";
+import ProgressBar from "./assessment/Progressbar";
 
 interface NavBarProps {
   isLoggedIn?: boolean;
   userName?: string;
   userAvatar?: string;
-  variant?: "default" | "editor"; // editor sẽ thu gọn khoảng cách để nhường chỗ cho khung code
+  variant?: "default" | "editor" | "quiz"; // editor sẽ thu gọn khoảng cách để nhường chỗ cho khung code
+  showProgressBar?: boolean;
+  showSave?: boolean;
+  totalquest?: number;
+  answeredCount?: number;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
@@ -14,8 +26,13 @@ export const NavBar: React.FC<NavBarProps> = ({
   userName = "Dev",
   userAvatar,
   variant = "default",
+  showProgressBar = true,
+  showSave = true,
+  answeredCount = 0,
+  totalquest = 15,
 }) => {
   const isEditor = variant === "editor";
+  const isQuiz = variant === "quiz";
 
   return (
     <nav
@@ -25,12 +42,12 @@ export const NavBar: React.FC<NavBarProps> = ({
       <div className="flex items-center gap-6">
         <a
           className={`font-bold text-blue-400 tracking-tight ${isEditor ? "text-lg" : "text-xl"}`}
-          href='/'
+          href="/"
         >
           &lt;/&gt; CodeQuest
         </a>
 
-        {isLoggedIn && !isEditor && (
+        {isLoggedIn && !isEditor && !isQuiz && (
           <div className="hidden md:flex items-center gap-4 font-mono text-xs text-zinc-400">
             <a
               href="/dashboard"
@@ -47,15 +64,26 @@ export const NavBar: React.FC<NavBarProps> = ({
           </div>
         )}
       </div>
+      {isQuiz && showProgressBar && (
+        <div className="flex-1 max-w-xl mx-4 flex justify-center items-center">
+          <ProgressBar answeredCount={answeredCount} totalquest={totalquest} />
+        </div>
+      )}
 
-      <div className="flex items-center gap-4">
-        {isLoggedIn ? (
+      <div className="flex items-center gap-4 justify-end">
+        {isQuiz && showSave && (
+          <Button variant="normal" className="flex gap-3 hover:text-white">
+            <Save className="w-5 h-5" />
+            <span className="text-[16px] font-semibold">Lưu bài làm</span>
+          </Button>
+        )}
+        {isLoggedIn || isQuiz ? (
           <div className="flex items-center gap-3 group relative cursor-pointer py-1">
             <div className="flex flex-col items-end font-mono">
               <span className="text-xs font-semibold text-zinc-200 group-hover:text-blue-400 transition-colors">
                 {userName}
               </span>
-              {!isEditor && (
+              {!isEditor && !isQuiz && (
                 <span className="text-[10px] text-emerald-400">Pro Member</span>
               )}
             </div>
