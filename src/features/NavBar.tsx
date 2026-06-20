@@ -81,7 +81,7 @@ export const NavBar: React.FC<NavBarProps> = ({
                 <User className="w-3.5 h-3.5" /> Hồ sơ cá nhân
               </a>
               <button
-                onClick={() => console.log("Logout logic...")}
+                onClick={() => window.location.href='/'}
                 className="w-full flex items-center gap-2 px-3 py-2 text-xs text-rose-400 hover:bg-rose-950/30 border-t border-zinc-800/60 transition-colors text-left"
               >
                 <LogOut className="w-3.5 h-3.5" /> Đăng xuất
