@@ -4,14 +4,7 @@ import { AdminHeader } from "./AdminHeader";
 
 export const AdminLayout: React.FC = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        background: "#0f0f0f",
-      }}
-    >
+    <div className="flex flex-col min-h-screen bg-[#050816]">
       <AdminHeader />
       <main style={{ flex: 1 }}>
         <AdminDashboard />
@@ -19,4 +12,3 @@ export const AdminLayout: React.FC = () => {
     </div>
   );
 };
-

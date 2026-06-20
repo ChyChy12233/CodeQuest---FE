@@ -40,18 +40,16 @@ export const NavBar: React.FC<NavBarProps> = ({
         ${isEditor ? "px-4 py-2" : "px-6 md:px-10 py-4"}`}
     >
       <div className="flex items-center gap-6">
-     <a
-  className={`
-    font-extrabold
-    text-blue-400
-    tracking-tight
-    hover:text-cyan-400
-    transition-all
-    ${isEditor ? "text-2xl" : "text-4xl"}
-  `}
+<a
+  className={`font-extrabold tracking-tight flex items-center gap-3 ${
+    isEditor ? "text-3xl" : "text-5xl"
+  }`}
   href="/"
 >
-  &lt;/&gt; CodeQuest
+  <span className="text-blue-500">&lt;/&gt;</span>
+  <span className="text-blue-400">
+    CodeQuest
+  </span>
 </a>
 
         {isLoggedIn && !isEditor && !isQuiz && (
