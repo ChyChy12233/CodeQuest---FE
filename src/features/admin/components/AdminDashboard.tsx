@@ -131,60 +131,47 @@ export const AdminDashboard: React.FC = () => {
       ),
     },
   ];
-return (
-  <ConfigProvider
-    theme={{
-      algorithm: theme.darkAlgorithm,
-      token: {
-        colorPrimary: "#3b82f6",
-        colorBgContainer: "#111827",
-        colorBgElevated: "#1f2937",
-      },
-    }}
-  >
-    <div className="p-6 min-h-[calc(100vh-64px)] bg-[#050816]">
-      <div
-  className="
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: "#3b82f6",
+          colorBgContainer: "#111827",
+          colorBgElevated: "#1f2937",
+        },
+      }}
+    >
+      <div className="p-6 min-h-[calc(100vh-64px)] bg-[#050816]">
+        <div
+          className="
     mb-8
     p-6
     rounded-3xl
     border border-[#18263d]
     bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)]
   "
->
-  <div className="flex justify-between items-center">
-    <div>
-      <h1 className="text-3xl font-bold text-white">
-        Ngân hàng câu hỏi
-      </h1>
+        >
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-white">
+                Ngân hàng câu hỏi
+              </h1>
 
-      <p className="text-slate-400 mt-2">
-        Quản lý câu hỏi đánh giá năng lực cho hệ thống CodeQuest.
-      </p>
-    </div>
+              <p className="text-slate-400 mt-2">
+                Quản lý câu hỏi đánh giá năng lực cho hệ thống CodeQuest.
+              </p>
+            </div>
 
-    <Button
-      onClick={() => setOpen(true)}
-      className="
-        flex items-center gap-2
-        px-5 py-3
-        rounded-xl
-        bg-gradient-to-r
-        from-[#2563eb]
-        border-none
-        ring-0
-        outline-none
-        focus:ring-0
-        focus:outline-none  
-        to-[#3b82f6]
-        text-white
-      "
-    >
-      <CirclePlus size={18} />
-      Thêm câu hỏi mới
-    </Button>
-  </div>
-</div>
+            <Button
+              onClick={() => setOpen(true)}
+              className=" flex items-center gap-2 px-5 py-3 rounded-xl bg-linear-to-r from-[#2563eb] border-none ring-0 outline-none focus:ring-0 focus:outline-none   to-[#3b82f6] text-white"
+            >
+              <CirclePlus size={18} />
+              Thêm câu hỏi mới
+            </Button>
+          </div>
+        </div>
         <Table
           dataSource={data}
           columns={columns}
