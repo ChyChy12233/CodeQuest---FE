@@ -146,44 +146,62 @@ export default function Asssessment() {
       />
 
       <main className="max-w-6xl p-5 flex flex-col gap-11 m-auto items-center">
-        <div className="items-center bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)] border-(--border) rounded-2xl p-12 flex gap-8">
+        <div
+          className="
+  items-center
+  bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)]
+  border border-[#18263d]
+  rounded-3xl
+  p-14
+  flex
+  gap-10
+  shadow-[0_0_60px_rgba(59,130,246,0.08)]
+"
+        >
           <div className="flex-1 text-left w-40%">
-            <h1 className="font-bold text-3xl text-white mb-3">
+            <h1 className="text-5xl font-extrabold tracking-tight leading-tight text-white mb-5">
               Khám phá trình độ lập trình của bạn
             </h1>
-            <p className="text-[16px]">
+            <p className="text-lg leading-8 text-slate-300 max-w-2xl">
               Trả lời một vài câu hỏi DSA và giải thuật để nhận được một lộ
               trình học tập cá nhân tạo bởi AI.
             </p>
           </div>
-          <div className="flex flex-1 justify-end items-center gap-4">
-            <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#161d2a] shadow-2xl">
-              <Timer className="text-[#50a1fe]"></Timer>
-              <div className="flex flex-col text-left justify-center tracking-tight">
-                <span className="text-[12px] leading-none">T.gian dự kiến</span>
-                <span className="text-[14px] font-bold text-[#d6d8db]">
-                  10-15 phút
-                </span>
-              </div>
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-[190px] hover:border-[#3b82f6] transition-all duration-300 shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-[#13294b] flex items-center justify-center mb-4">
+              <Timer className="text-[#60a5fa]" />
             </div>
-            <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#161d2a] shadow-2xl">
-              <Target className="text-[#c27aff]"></Target>
-              <div className="flex flex-col text-left justify-center tracking-tight">
-                <div className="text-[12px] leading-none">Độ khó</div>
-                <div className="text-[14px] font-bold text-[#d6d8db]">
-                  Thích ứng
-                </div>
-              </div>
+
+            <div className="text-2xl font-bold text-white">10-15</div>
+
+            <div className="text-slate-400 text-sm">phút hoàn thành</div>
+          </div>
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-[190px] hover:border-[#c084fc] transition-all duration-300 shadow-lg">
+            <div className="w-12 h-12 rounded-2xl bg-[#2a163d] flex items-center justify-center mb-4">
+              <Target className="text-[#c084fc]" />
             </div>
-            <div className="flex flex-1 whitespace-nowrap justify-center items-center gap-3 bg-[#081521] h-fit p-3 rounded-2xl border border-[#124532] shadow-[0_0_15px_rgba(16,185,129,0.15)]">
-              <Zap className="text-[#22c55e]"></Zap>
-              <div className="flex flex-col text-left justify-center tracking-tight">
-                <div className="text-[12px] leading-none">Phần thưởng</div>
-                <div className="text-[14px] font-bold text-[#22c55e]">
-                  +500 XP
-                </div>
-              </div>
+
+            <div className="text-2xl font-bold text-white">Adaptive</div>
+
+            <div className="text-slate-400 text-sm">Độ khó thích ứng</div>
+          </div>
+          <div
+            className="
+bg-[#0f172a]
+border border-[#1e3a2a]
+rounded-3xl
+p-5
+min-w-[190px]
+hover:border-[#22c55e]
+transition-all duration-300
+shadow-lg
+"
+          >
+            <div className="w-12 h-12 rounded-2xl bg-[#14532d] flex items-center justify-center mb-4">
+              <Zap className="text-[#22c55e]" />
             </div>
+            <div className="text-3xl font-bold text-[#4ade80]">+500 XP</div>
+            <div className="text-slate-400 text-sm">Phần thưởng hoàn thành</div>
           </div>
         </div>
         <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-6 w-full items-start">

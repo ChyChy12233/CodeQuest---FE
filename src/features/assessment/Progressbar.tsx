@@ -9,21 +9,30 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const percentage =
     totalquest > 0 ? Math.min((answeredCount / totalquest) * 100, 100) : 0;
+return (
+  <div className="w-full flex items-center gap-4">
+    <span className="text-sm text-slate-400 whitespace-nowrap">
+      Tiến độ
+    </span>
 
-  return (
-    <div className="flex-1 flex flex-col items-center justify-center">
-      <div className="flex justify-between items-center w-full text-[14px] font-bold mb-3">
-        <span className="">Tiến độ</span>
-        <span className="text-[#1fb558]">
-          {answeredCount}/{totalquest} Câu hỏi
-        </span>
-      </div>
-      <div className="w-full h-1.5 bg-(--code-bg) rounded-full overflow-hidden">
-        <div
-          className="h-full bg-[#4acf7b] rounded-full transition-all duration-500 ease-out"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
+    <div className="flex-1 h-2 bg-[#111827] rounded-full overflow-hidden">
+      <div
+        className="
+        h-full
+        rounded-full
+        bg-gradient-to-r
+        from-[#22c55e]
+        to-[#4ade80]
+        transition-all
+        duration-500
+        "
+        style={{ width: `${percentage}%` }}
+      />
     </div>
-  );
+
+    <span className="text-sm font-semibold text-emerald-400 whitespace-nowrap">
+      {answeredCount}/{totalquest}
+    </span>
+  </div>
+);
 }

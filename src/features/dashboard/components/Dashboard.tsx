@@ -6,12 +6,15 @@ import SkillRadarChart from "./SkillRadarChart";
 import ImprovementReport from "./ImprovementReport";
 import { NavBar } from "../../NavBar";
 import { Button } from "../../../components/common/Button";
-import avt from "../../../../public/d09df851e636fc7377e7a5fb048706c0.jpg";
 
 export default function Dashboard({ userName = "anh Huy" }) {
   return (
     <div className="bg-[#0b0f19] min-h-screen text-gray-300 font-sans antialiased selection:bg-blue-500/30">
-      <NavBar isLoggedIn={true} userAvatar={avt} userName={userName} />
+      <NavBar
+        isLoggedIn={true}
+        userAvatar="/d09df851e636fc7377e7a5fb048706c0.jpg"
+        userName={userName}
+      />
 
       <main className="max-w-7xl mx-auto p-6 md:p-10 space-y-10">
         <div className=" flex justify-between items-center">

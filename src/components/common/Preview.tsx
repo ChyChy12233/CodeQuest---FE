@@ -43,9 +43,9 @@ export const Preview: React.FC<PreviewProps> = ({
           className="scale-90 origin-right py-0! px-1.5!"
         >
           {difficulty === "success"
-            ? "Nâng cao"
+            ? "Cơ bản"
             : difficulty === "warning"
-              ? "Cơ bản"
+              ? "Nâng cao"
               : difficulty === "error"
                 ? "Thử thách"
                 : "Nhập môn"}

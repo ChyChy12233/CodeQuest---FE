@@ -70,7 +70,7 @@ export const SidebarTask: React.FC = () => {
 ]`
     },
 
-    syntaxHint: "Cú pháp cơ bản:\nconst newArray = oldArray.map(item => {\n  return { ...item, newProperty: value };\n});\n\nĐừng quên từ khóa `return` bên trong hàm callback nhé!"
+    syntaxHint: "const newArray = oldArray.map(item => {\n  return { ...item, newProperty: value };\n});"
   };
 
   return (
@@ -155,7 +155,7 @@ export const SidebarTask: React.FC = () => {
                 [Hide]
               </button>
             </div>
-            <pre className="text-xs text-zinc-400 font-mono whitespace-pre-wrap bg-[#050816]/40 p-2.5 rounded border-zinc-900 leading-relaxed">
+            <pre className="text-2xs text-zinc-400 font-mono whitespace-pre-wrap bg-[#050816]/40 p-2.5 rounded border-zinc-900 leading-relaxed">
               {learningTask.syntaxHint}
             </pre>
           </div>
