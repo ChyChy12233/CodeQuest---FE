@@ -167,7 +167,7 @@ export default function Asssessment() {
               trình học tập cá nhân tạo bởi AI.
             </p>
           </div>
-          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-[190px] hover:border-[#3b82f6] transition-all duration-300 shadow-lg">
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-47.5 hover:border-[#3b82f6] transition-all duration-300 shadow-lg">
             <div className="w-12 h-12 rounded-2xl bg-[#13294b] flex items-center justify-center mb-4">
               <Timer className="text-[#60a5fa]" />
             </div>
@@ -176,7 +176,7 @@ export default function Asssessment() {
 
             <div className="text-slate-400 text-sm">phút hoàn thành</div>
           </div>
-          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-[190px] hover:border-[#c084fc] transition-all duration-300 shadow-lg">
+          <div className="bg-[#0f172a] border border-[#1e293b] rounded-3xl p-5 min-w-47.5 hover:border-[#c084fc] transition-all duration-300 shadow-lg">
             <div className="w-12 h-12 rounded-2xl bg-[#2a163d] flex items-center justify-center mb-4">
               <Target className="text-[#c084fc]" />
             </div>
@@ -191,7 +191,7 @@ bg-[#0f172a]
 border border-[#1e3a2a]
 rounded-3xl
 p-5
-min-w-[190px]
+min-w-47.5
 hover:border-[#22c55e]
 transition-all duration-300
 shadow-lg
