@@ -131,32 +131,60 @@ export const AdminDashboard: React.FC = () => {
       ),
     },
   ];
+return (
+  <ConfigProvider
+    theme={{
+      algorithm: theme.darkAlgorithm,
+      token: {
+        colorPrimary: "#3b82f6",
+        colorBgContainer: "#111827",
+        colorBgElevated: "#1f2937",
+      },
+    }}
+  >
+    <div className="p-6 min-h-[calc(100vh-64px)] bg-[#050816]">
+      <div
+  className="
+    mb-8
+    p-6
+    rounded-3xl
+    border border-[#18263d]
+    bg-[radial-gradient(circle_at_center,#0b2530_0%,#060f1d_100%)]
+  "
+>
+  <div className="flex justify-between items-center">
+    <div>
+      <h1 className="text-3xl font-bold text-white">
+        Ngân hàng câu hỏi
+      </h1>
 
-  return (
-    <ConfigProvider
-      theme={{
-        algorithm: theme.darkAlgorithm,
-        token: {
-          colorPrimary: "#fadb14",
-          colorBgContainer: "#111827",
-          colorBgElevated: "#1f2937",
-        },
-      }}
+      <p className="text-slate-400 mt-2">
+        Quản lý câu hỏi đánh giá năng lực cho hệ thống CodeQuest.
+      </p>
+    </div>
+
+    <Button
+      onClick={() => setOpen(true)}
+      className="
+        flex items-center gap-2
+        px-5 py-3
+        rounded-xl
+        bg-gradient-to-r
+        from-[#2563eb]
+        border-none
+        ring-0
+        outline-none
+        focus:ring-0
+        focus:outline-none  
+        to-[#3b82f6]
+        text-white
+      "
     >
-      <div className="p-6 min-h-[calc(100vh-64px)] bg-[#050816]">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-white text-xl font-bold m-0">
-            Quản lý ngân hàng câu hỏi
-          </h2>
-          <Button
-            onClick={() => setOpen(true)}
-            className="flex items-center h-10 font-semibold text-black transition-all hover:opacity-90 bg-[#fadb14] px-4 rounded-md"
-          >
-            <CirclePlus size={18} className="mr-2" />
-            Thêm câu hỏi mới
-          </Button>
-        </div>
-
+      <CirclePlus size={18} />
+      Thêm câu hỏi mới
+    </Button>
+  </div>
+</div>
         <Table
           dataSource={data}
           columns={columns}
