@@ -119,8 +119,7 @@ const stepsData = [
 
 export default function RoadmapPage() {
   const navigate = useNavigate();
-  const [activeNodeId, setActiveNodeId] = useState<string | null>("4"); // Mặc định chọn bài .map()
-    useState<string | null>("4");
+  const [activeNodeId] = useState<string | null>("4"); // Mặc định chọn bài .map()
   const [previewData, setPreviewData] = useState<{
     title: string;
     concept: string;
