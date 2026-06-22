@@ -10,6 +10,13 @@ import { Badge } from "../../components/common/Badge";
 import type { QuestionItem } from "./Question";
 const API_URL = "Question.json";
 
+interface qtype {
+  _id?: number;
+  input?: string;
+  type: string;
+  options?: string[];
+}
+
 export default function Asssessment() {
   const [currentQuest, setCurrentQuest] = useState(1);
   const [ans, setAns] = useState<Record<number, string>>({});
@@ -102,15 +109,16 @@ export default function Asssessment() {
 
         if (!res.ok) throw new Error("Lỗi khi tải dữ liệu từ Server");
         const data = await res.json();
-        const formattedQuest = data.questions.map((q: any, index: number) => ({
-          id: q._id || index + 1,
-          title: q.input || "Không có tiêu đề",
-          type: q.type,
-          options: q.options || [],
-          code: "",
-        }));
+        const formattedQuest = data.questions.map(
+          (q: qtype, index: number) => ({
+            id: q._id || index + 1,
+            title: q.input || "Không có tiêu đề",
+            type: q.type,
+            options: q.options || [],
+            code: "",
+          }),
+        );
         setQuest(formattedQuest);
-        setQuest(data);
       } catch (error) {
         console.error("Lỗi khi tải câu hỏi:", { error });
         setLoadError(true);
