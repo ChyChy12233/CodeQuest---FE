@@ -8,6 +8,7 @@ import RoadmapPage from "./features/roadmap/components/RoadmapPage";
 import Dashboard from "./features/dashboard/components/Dashboard";
 import Asssessment from "./features/assessment/Assessment";
 import Result from "./features/assessment/Result";
+import LessonPage from "./features/roadmap/components/LessonPage";
 import { AdminLayout } from "./features/admin/components/AdminLayout";
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
       <Route path="/result" element={<Result />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/roadmap" element={<RoadmapPage />} />
+      <Route path="/lesson/:id" element={<LessonPage />} />
       <Route path='/admin' element={<AdminLayout />}/>
     </Routes>
   );

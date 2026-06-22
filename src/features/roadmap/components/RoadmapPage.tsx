@@ -7,7 +7,7 @@ import { Preview } from "../../../components/common/Preview";
 import { CheckCircle2, Compass, Award } from "lucide-react";
 import StatCard from "../../dashboard/components/StatCard";
 import bg from "../../../../public/bg.png";
-
+import { useNavigate } from "react-router";
 const stepsData = [
   {
     id: "1",
@@ -118,8 +118,9 @@ const stepsData = [
 ];
 
 export default function RoadmapPage() {
+  const navigate = useNavigate();
   const [activeNodeId, setActiveNodeId] = useState<string | null>("4"); // Mặc định chọn bài .map()
-
+    useState<string | null>("4");
   const [previewData, setPreviewData] = useState<{
     title: string;
     concept: string;
@@ -173,7 +174,7 @@ export default function RoadmapPage() {
                   xp={step.xp}
                   status={step.status}
                   isActive={activeNodeId === step.id}
-                  onClick={() => setActiveNodeId(step.id)}
+                  onClick={() => navigate(`/lesson/${step.id}`)}
                   onMouseEnter={(e) => {
                     setPreviewData({
                       title: step.title,
