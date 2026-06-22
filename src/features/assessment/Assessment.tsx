@@ -87,12 +87,12 @@ export default function Asssessment() {
   /*Lấy câu hỏi */
   useEffect(() => {
     const fetchQuest = async () => {
-      // if (!challengeId) {
-      //   console.error("Không tìm thấy mã bài thi (challengeId) trên URL!");
-      //   setLoadError(true);
-      //   setLoading(false);
-      //   return;
-      // }
+      if (!challengeId) {
+        console.error("Không tìm thấy mã bài thi (challengeId) trên URL!");
+        setLoadError(true);
+        setLoading(false);
+        return;
+      }
       try {
         setLoading(true);
         const res = await fetch(
@@ -102,14 +102,14 @@ export default function Asssessment() {
 
         if (!res.ok) throw new Error("Lỗi khi tải dữ liệu từ Server");
         const data = await res.json();
-        // const formattedQuest = data.questions.map((q: any, index: number) => ({
-        //   id: q._id || index + 1,
-        //   title: q.input || "Không có tiêu đề",
-        //   type: q.type,
-        //   options: q.options || [],
-        //   code: "",
-        // }));
-        // setQuest(formattedQuest);
+        const formattedQuest = data.questions.map((q: any, index: number) => ({
+          id: q._id || index + 1,
+          title: q.input || "Không có tiêu đề",
+          type: q.type,
+          options: q.options || [],
+          code: "",
+        }));
+        setQuest(formattedQuest);
         setQuest(data);
       } catch (error) {
         console.error("Lỗi khi tải câu hỏi:", { error });
