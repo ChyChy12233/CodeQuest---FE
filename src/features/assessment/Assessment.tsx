@@ -127,7 +127,7 @@ export default function Asssessment() {
       }
     };
     fetchQuest();
-  }, []);
+  }, [challengeId]);
 
   if (loading) {
     return (
