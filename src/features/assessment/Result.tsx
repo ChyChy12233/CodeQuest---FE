@@ -59,7 +59,7 @@ export default function Result() {
       <NavBar variant="quiz" showProgressBar={false} showSave={false} />
       <main className="p-5 flex flex-col gap-11 m-auto items-center">
         <div className="flex flex-col justify-center items-center gap-5">
-          <div className="w-fit h-fit p-5 bg-[#0b3026] rounded-2xl border border-(--accent-border) shadow-[0_0_25px_rgba(16,185,129,0.15)]">
+          <div className="w-fit h-fit p-5 bg-[#0b3026] rounded-2xl border border-(--accent-border) animate-[glow_5s_ease-in-out_1] shadow-[0_0_25px_rgba(16,185,129,0.15)]">
             <Award className="text-(--accent) w-12 h-12"></Award>
           </div>
           <h1 className="text-3xl font-bold text-white drop-shadow-2xl">
