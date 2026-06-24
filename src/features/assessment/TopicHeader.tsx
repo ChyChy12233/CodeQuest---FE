@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import type React from "react";
 
 interface TopicHeaderProps {
@@ -20,12 +19,6 @@ export const TopicHeader: React.FC<TopicHeaderProps> = ({
       </div>
       <span className="font-semibold text-white">{title} </span>
       <span className="text-[14px]">{description}</span>
-      <div className="flex justify-start items-center gap-1 ">
-        <span className="text-[14px] font-semibold text-white group-hover:text-[#1fc366]">
-          Start Module
-        </span>
-        <ArrowRight className="text-white w-4 h-4 group-hover:text-[#1fc366]"></ArrowRight>
-      </div>
     </div>
   );
 };
