@@ -22,9 +22,22 @@ interface RoadmapItem {
 }
 export default function Result() {
   const location = useLocation();
-  const data = location.state;
-  const [activeRoadmap, setActiveRoadmap] = useState<RoadmapItem | null>(null);
-  const [loadingRoadmap, setLoadingRoadmap] = useState(true);
+  const data = location.state || { XP: 250, score: 85 };
+  const [activeRoadmap, setActiveRoadmap] = useState<RoadmapItem | null>({
+    userId: "mock-user-123",
+    templateId: "mock-template-456",
+    title: "Frontend Mastery Roadmap",
+    status: "active",
+    totalNodes: 30,
+    completedNodes: 5,
+    generationParams: {
+      detectedLevel: "Intermediate",
+      weakSkills: ["Tối ưu hóa hiệu suất", "Quản lý State phức tạp", "Next.js"],
+      strongSkills: ["React Hooks", "CSS/Tailwind", "JavaScript cơ bản"],
+      pacePreference: "fast",
+    },
+  });
+  const [loadingRoadmap, setLoadingRoadmap] = useState(false);
   useEffect(() => {
     const fetchRoadmap = async () => {
       try {
@@ -71,16 +84,23 @@ export default function Result() {
           </p>
         </div>
         <div className="flex gap-5">
-          <div className="bg-(--card-bg) p-5 rounded-2xl gap-5 flex-col flex">
-            <div>
+          <div className="bg-(--card-bg) p-5 rounded-2xl gap-3 flex-col flex">
+            <div className="flex flex-col gap-4">
               <span className="font-semibold text-(--text)">
                 TRÌNH ĐỘ HIỆN TẠI
               </span>
-              <div>
-                <h1></h1>
-                <div></div>
+              <div
+                className="flex justify-center items-center
+    w-fit mx-auto
+    px-5 py-3
+    rounded-xl
+    bg-linear-to-r from-[#2563eb] to-[#3b82f6]
+    text-white
+    shadow-[0_0_20px_rgba(59,130,246,0.3)]
+    font-bold text-center drop-shadow-md whitespace-nowrap leading-none"
+              >
+                {activeRoadmap?.generationParams.detectedLevel}
               </div>
-              <p></p>
             </div>
             <div className="bg-[#050b18] flex gap-3 justify-center items-center p-3 rounded-2xl border border-(--border)">
               <div className="rounded-full w-11 h-11 flex justify-center items-center bg-(--accent-bg)">
@@ -94,16 +114,13 @@ export default function Result() {
               </div>
             </div>
           </div>
-          <div className="bg-(--card-bg) p-5 rounded-2xl">
-            <span className="text-white font-semibold">Skill radar</span>
-          </div>
         </div>
         <div className="bg-(--card-bg) h-fit p-5 rounded-2xl max-w-6xl">
           <div className="flex justify-between">
             <div className="flex gap-3 items-center">
               <Sparkles className="text-violet-500"></Sparkles>
               <span className="text-white text-2xl font-bold">
-                Roadmap đề xuất của CodeQuest AI
+                Kết quả đánh giá của CodeQuest AI
               </span>
             </div>
             <Button variant="secondary" to="/roadmap">
