@@ -10,19 +10,29 @@ import {
   theme,
   Tag,
   message,
+  Tabs,
+  Upload,
+  Badge,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { Edit, Trash2, CirclePlus, FlaskConical } from "lucide-react";
+import type { RcFile } from "antd/es/upload";
+import {
+  Edit,
+  Trash2,
+  CirclePlus,
+  FlaskConical,
+  UploadCloud,
+} from "lucide-react";
 import { Button } from "../../../components/common/Button";
 
 interface ChallengeData {
   _id?: string;
-  title: string; // chọn title bên mongo hoặc problem_name bên json_file
-  description: string; // có bên mongo hoặc không bên json_file
-  module?: number; // không bên mongo hoặc có bên json_file
-  topic: string; // chọn topic bên mongo hoặc type bên json_file
-  difficulty: "Easy" | "Medium" | "Hard"; // có bên mongo hoặc không bên json_file
-  optimalPattern: string; // có bên mongo hoặc không bên json_file
+  title: string;
+  description: string;
+  module?: number;
+  topic: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  optimalPattern: string;
   testcases: TestCase[];
 }
 
@@ -31,6 +41,19 @@ interface TestCase {
   type: "sample" | "edge_case" | "random" | "stress_test";
   input: string;
   expected_output: string;
+}
+
+interface JsonTestCaseStructure {
+  type?: "sample" | "edge_case" | "random" | "stress_test";
+  input?: string;
+  expected_output?: string;
+}
+
+interface JsonFileStructure {
+  problem_name?: string;
+  type?: string;
+  module?: number;
+  test_cases?: JsonTestCaseStructure[];
 }
 
 export const AdminDashboard: React.FC = () => {
@@ -56,17 +79,18 @@ export const AdminDashboard: React.FC = () => {
     },
   ]);
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [editing, setEditing] = useState<ChallengeData | null>(null);
   const [form] = Form.useForm();
-  const [isTestCaseModalOpen, setIsTestCaseModalOpen] = useState(false);
+  const [isTestCaseModalOpen, setIsTestCaseModalOpen] =
+    useState<boolean>(false);
   const [currentChallenge, setCurrentChallenge] =
     useState<ChallengeData | null>(null);
-  const [isSubFormOpen, setIsSubFormOpen] = useState(false);
+  const [isSubFormOpen, setIsSubFormOpen] = useState<boolean>(false);
   const [editingTestCase, setEditingTestCase] = useState<TestCase | null>(null);
   const [subForm] = Form.useForm();
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     form.validateFields().then((formValues) => {
       if (editing && editing._id) {
         setData((prev) =>
@@ -79,6 +103,7 @@ export const AdminDashboard: React.FC = () => {
         const newChallenge: ChallengeData = {
           _id: "mock_" + Date.now(),
           ...formValues,
+          testcases: [],
         };
         setData((prev) => [...prev, newChallenge]);
         message.success("Thêm thử thách thành công!");
@@ -89,25 +114,23 @@ export const AdminDashboard: React.FC = () => {
     });
   };
 
-  const handleEdit = (record: ChallengeData) => {
+  const handleEdit = (record: ChallengeData): void => {
     setEditing(record);
     setOpen(true);
     form.setFieldsValue(record);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (id: string): void => {
     setData((prev) => prev.filter((item) => item._id !== id));
     message.success("Đã xóa thử thách thành công!");
   };
 
-  // 1. Mở modal testcase của câu hỏi được chọn
-  const handleOpenTestCases = (record: ChallengeData) => {
+  const handleOpenTestCases = (record: ChallengeData): void => {
     setCurrentChallenge(record);
     setIsTestCaseModalOpen(true);
   };
 
-  // 2. Mở form nhỏ để thêm mới hoặc sửa 1 testcase cụ thể
-  const handleOpenSubForm = (testcase?: TestCase) => {
+  const handleOpenSubForm = (testcase?: TestCase): void => {
     if (testcase) {
       setEditingTestCase(testcase);
       subForm.setFieldsValue(testcase);
@@ -118,7 +141,7 @@ export const AdminDashboard: React.FC = () => {
     setIsSubFormOpen(true);
   };
 
-  const handleSubFormSubmit = () => {
+  const handleSubFormSubmit = (): void => {
     subForm.validateFields().then((formValues) => {
       if (!currentChallenge) return;
       let updatedTestCases = [...(currentChallenge.testcases || [])];
@@ -147,7 +170,7 @@ export const AdminDashboard: React.FC = () => {
     });
   };
 
-  const handleDeleteTestCase = (testCaseId: string) => {
+  const handleDeleteTestCase = (testCaseId: string): void => {
     if (!currentChallenge) return;
     const updatedTestCases = (currentChallenge.testcases || []).filter(
       (tc) => tc.id !== testCaseId,
@@ -160,6 +183,81 @@ export const AdminDashboard: React.FC = () => {
     setData(updatedData);
     setCurrentChallenge({ ...currentChallenge, testcases: updatedTestCases });
     message.success("Đã xóa testcase!");
+  };
+
+  const handleImportJsonFiles = (fileList: RcFile[]): void => {
+    if (!currentChallenge) return;
+    let newImportedTestCases: TestCase[] = [];
+    let completedFiles = 0;
+    let successFilesCount = 0;
+
+    fileList.forEach((file: RcFile) => {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        try {
+          const resultString = e.target?.result as string;
+          const json = JSON.parse(resultString) as JsonFileStructure;
+
+          if (json && Array.isArray(json.test_cases)) {
+            const parsedCases: TestCase[] = json.test_cases.map(
+              (tc: JsonTestCaseStructure) => ({
+                id: `tc_json_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+                type: tc.type || "random",
+                input: tc.input || "",
+                expected_output: tc.expected_output || "",
+              }),
+            );
+            newImportedTestCases = [...newImportedTestCases, ...parsedCases];
+            successFilesCount++;
+            message.success(`Đọc thành công dữ liệu từ file: ${file.name}`);
+          } else {
+            message.error(
+              `File ${file.name} sai cấu trúc (thiếu mảng test_cases).`,
+            );
+          }
+        } catch (error) {
+          message.error(
+            `File ${file.name} lỗi định dạng hoặc không phải JSON chuẩn. Chi tiết: ${error instanceof Error ? error.message : "Unknown error"}`,
+          );
+        } finally {
+          completedFiles++;
+          if (completedFiles === fileList.length) {
+            if (newImportedTestCases.length === 0) {
+              message.warning(
+                "Quá trình import hoàn tất: Không có testcase nào hợp lệ được thêm.",
+              );
+            } else {
+              const updatedTestCases = [
+                ...(currentChallenge.testcases || []),
+                ...newImportedTestCases,
+              ];
+              const updatedData = data.map((item) =>
+                item._id === currentChallenge._id
+                  ? { ...item, testcases: updatedTestCases }
+                  : item,
+              );
+              setData(updatedData);
+              setCurrentChallenge({
+                ...currentChallenge,
+                testcases: updatedTestCases,
+              });
+              message.open({
+                type: "success",
+                content: `🎉 Khởi tạo dữ liệu thành công! Đã nạp thành công ${newImportedTestCases.length} testcase từ ${successFilesCount}/${fileList.length} file JSON.`,
+                duration: 4,
+              });
+            }
+          }
+        }
+      };
+
+      reader.onerror = () => {
+        message.error(`Không thể đọc file ${file.name} từ bộ nhớ thiết bị.`);
+        completedFiles++;
+      };
+
+      reader.readAsText(file);
+    });
   };
 
   const columns: ColumnsType<ChallengeData> = [
@@ -204,11 +302,26 @@ export const AdminDashboard: React.FC = () => {
       align: "center",
       render: (_, record) => (
         <Space size="middle">
-          <FlaskConical
-            size={16}
-            className="text-orange-500 hover:text-orange-400 cursor-pointer transition-colors"
-            onClick={() => handleOpenTestCases(record)}
-          />
+          <Badge
+            count={record.testcases?.length || 0}
+            showZero={false}
+            overflowCount={99}
+            offset={[4, 12]}
+            style={{
+              color: "#ffffff",
+              fontSize: "9px",
+              height: "12px",
+              minWidth: "12px",
+              lineHeight: "12px",
+              padding: 0,
+            }}
+          >
+            <FlaskConical
+              size={16}
+              className="text-orange-500 hover:text-orange-400 cursor-pointer transition-colors"
+              onClick={() => handleOpenTestCases(record)}
+            />
+          </Badge>
           <Edit
             size={16}
             className="text-blue-500 hover:text-blue-400 cursor-pointer transition-colors"
@@ -223,6 +336,7 @@ export const AdminDashboard: React.FC = () => {
       ),
     },
   ];
+
   return (
     <ConfigProvider
       theme={{
@@ -325,6 +439,7 @@ export const AdminDashboard: React.FC = () => {
             </Form.Item>
           </Form>
         </Modal>
+
         <Modal
           open={isTestCaseModalOpen}
           title={`Danh sách Testcase: ${currentChallenge?.title || ""}`}
@@ -336,87 +451,142 @@ export const AdminDashboard: React.FC = () => {
           width={900}
           centered
         >
-          <div className="mt-4">
-            <div className="flex justify-between items-center mb-4">
-              <Button
-                onClick={() => handleOpenSubForm()}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-white border-none"
-              >
-                <CirclePlus size={16} />
-                Thêm Testcase
-              </Button>
-            </div>
+          <Tabs
+            defaultActiveKey="1"
+            className="mt-2"
+            items={[
+              {
+                key: "1",
+                label: "Dữ liệu cấu hình thủ công",
+                children: (
+                  <div className="mt-4">
+                    <div className="flex justify-between items-center mb-4">
+                      <Button
+                        onClick={() => handleOpenSubForm()}
+                        className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-500 text-white border-none"
+                      >
+                        <CirclePlus size={16} />
+                        Thêm Testcase
+                      </Button>
+                    </div>
 
-            <Table
-              dataSource={currentChallenge?.testcases || []}
-              rowKey="id"
-              pagination={{ pageSize: 5 }}
-              columns={[
-                {
-                  title: "Loại",
-                  dataIndex: "type",
-                  key: "type",
-                  width: "15%",
-                  render: (type: string) => {
-                    const colors: Record<string, string> = {
-                      sample: "blue",
-                      edge_case: "purple",
-                      random: "cyan",
-                      stress_test: "volcano",
-                    };
-                    return (
-                      <Tag color={colors[type] || "default"}>
-                        {type.toUpperCase()}
-                      </Tag>
-                    );
-                  },
-                },
-                {
-                  title: "Input",
-                  dataIndex: "input",
-                  key: "input",
-                  ellipsis: true,
-                  render: (text: string) => (
-                    <code className="bg-zinc-800 px-2 py-1 rounded text-xs">
-                      {text}
-                    </code>
-                  ),
-                },
-                {
-                  title: "Kết quả (Expected Output)",
-                  dataIndex: "expected_output",
-                  key: "expected_output",
-                  ellipsis: true,
-                  render: (text: string) => (
-                    <code className="bg-zinc-800 px-2 py-1 rounded text-xs">
-                      {text}
-                    </code>
-                  ),
-                },
-                {
-                  title: "Hành động",
-                  key: "action",
-                  align: "center",
-                  width: "15%",
-                  render: (_, record: TestCase) => (
-                    <Space size="middle">
-                      <Edit
-                        size={14}
-                        className="text-blue-500 hover:text-blue-400 cursor-pointer"
-                        onClick={() => handleOpenSubForm(record)}
-                      />
-                      <Trash2
-                        size={14}
-                        className="text-red-500 hover:text-red-400 cursor-pointer"
-                        onClick={() => handleDeleteTestCase(record.id)}
-                      />
-                    </Space>
-                  ),
-                },
-              ]}
-            />
-          </div>
+                    <Table
+                      dataSource={currentChallenge?.testcases || []}
+                      rowKey="id"
+                      pagination={{ pageSize: 5 }}
+                      columns={[
+                        {
+                          title: "Loại",
+                          dataIndex: "type",
+                          key: "type",
+                          width: "15%",
+                          render: (type: string) => {
+                            const colors: Record<string, string> = {
+                              sample: "blue",
+                              edge_case: "purple",
+                              random: "cyan",
+                              stress_test: "volcano",
+                            };
+                            return (
+                              <Tag color={colors[type] || "default"}>
+                                {type.toUpperCase()}
+                              </Tag>
+                            );
+                          },
+                        },
+                        {
+                          title: "Đầu vào (Input)",
+                          dataIndex: "input",
+                          key: "input",
+                          ellipsis: true,
+                          render: (text: string) => (
+                            <code className="bg-zinc-800 px-2 py-1 rounded text-xs">
+                              {text}
+                            </code>
+                          ),
+                        },
+                        {
+                          title: "Kết quả (Expected Output)",
+                          dataIndex: "expected_output",
+                          key: "expected_output",
+                          ellipsis: true,
+                          render: (text: string) => (
+                            <code className="bg-zinc-800 px-2 py-1 rounded text-xs">
+                              {text}
+                            </code>
+                          ),
+                        },
+                        {
+                          title: "Hành động",
+                          key: "action",
+                          align: "center",
+                          width: "15%",
+                          render: (_, record: TestCase) => (
+                            <Space size="middle">
+                              <Edit
+                                size={14}
+                                className="text-blue-500 hover:text-blue-400 cursor-pointer"
+                                onClick={() => handleOpenSubForm(record)}
+                              />
+                              <Trash2
+                                size={14}
+                                className="text-red-500 hover:text-red-400 cursor-pointer"
+                                onClick={() => handleDeleteTestCase(record.id)}
+                              />
+                            </Space>
+                          ),
+                        },
+                      ]}
+                    />
+                  </div>
+                ),
+              },
+              {
+                key: "2",
+                label: "Nhập dữ liệu từ file JSON",
+                children: (
+                  <div className="mt-4 py-4">
+                    <div className="mb-6">
+                      <h3 className="text-white text-base font-medium mb-1">
+                        Tải lên testcase
+                      </h3>
+                    </div>
+
+                    <Upload.Dragger
+                      multiple={true}
+                      accept=".json"
+                      showUploadList={false}
+                      beforeUpload={(
+                        file: RcFile,
+                        fileList: RcFile[],
+                      ): boolean => {
+                        if (file === fileList[0]) {
+                          handleImportJsonFiles(fileList);
+                        }
+                        return false;
+                      }}
+                      className="border-dashed border-2 border-zinc-700 bg-zinc-900/30 rounded-2xl hover:border-blue-500 transition-colors py-8"
+                    >
+                      <div className="flex flex-col items-center justify-center gap-3">
+                        <div className="p-4 bg-zinc-800/80 rounded-full text-blue-500">
+                          <UploadCloud size={32} />
+                        </div>
+                        <p className="ant-upload-text text-slate-200 font-medium">
+                          Nhấp hoặc kéo thả file JSON vào đây để tải lên
+                        </p>
+                        <p className="ant-upload-hint text-slate-500 text-xs">
+                          Chỉ chấp nhận định dạng file .json chứa mảng
+                          test_cases (Ví dụ: DP01.json)
+                        </p>
+                      </div>
+                    </Upload.Dragger>
+                  </div>
+                ),
+              },
+            ]}
+          />
         </Modal>
+
         <Modal
           open={isSubFormOpen}
           title={editingTestCase ? "Cập nhật Testcase" : "Tạo Testcase mới"}
