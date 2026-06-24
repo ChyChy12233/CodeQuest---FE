@@ -22,17 +22,21 @@ import {
   CirclePlus,
   FlaskConical,
   UploadCloud,
+  CodeXml,
+  CircleCheckBig,
 } from "lucide-react";
 import { Button } from "../../../components/common/Button";
 
 interface ChallengeData {
-  _id?: string;
+  _id?: string | { $oid: string };
+  categoryId: string;
+  challengeType: "coding" | "multiple_choice";
   title: string;
+  slug?: string;
+  difficult: "easy" | "medium" | "hard";
   description: string;
-  module?: number;
-  topic: string;
-  difficulty: "Easy" | "Medium" | "Hard";
-  optimalPattern: string;
+  testcasePath: string;
+  isActive: boolean;
   testcases: TestCase[];
 }
 
@@ -60,11 +64,15 @@ export const AdminDashboard: React.FC = () => {
   const [data, setData] = useState<ChallengeData[]>([
     {
       _id: "6a2eb206dc19c28c1a63fc1e",
-      title: "Two Sum",
-      description: "Find two numbers that add up to a target sum.",
-      topic: "Two Pointers",
-      difficulty: "Easy",
-      optimalPattern: "hash map lookup",
+      title: "ARR01 - Tìm số lớn nhất và nhỏ nhất trong mảng",
+      description:
+        "Hãy viết chương trình tìm số lớn nhất và nhỏ nhất trong mảng gồm N phần tử.",
+      categoryId: "65f123456789abcdef012345",
+      challengeType: "coding",
+      difficult: "easy",
+      testcasePath:
+        "challenge/arr01_-_tim_so_lon_nhat_va_nho_nhat_trong_mang.json",
+      isActive: true,
       testcases: [],
     },
     {
@@ -72,9 +80,11 @@ export const AdminDashboard: React.FC = () => {
       title: "Longest Substring Without Repeating Characters",
       description:
         "Find the length of the longest substring without repeating characters.",
-      topic: "Sliding Window",
-      difficulty: "Medium",
-      optimalPattern: "sliding window",
+      categoryId: "65f123456789abcdef012346",
+      challengeType: "coding",
+      difficult: "medium",
+      testcasePath: "challenge/longest_substring.json",
+      isActive: true,
       testcases: [],
     },
   ]);
@@ -98,12 +108,13 @@ export const AdminDashboard: React.FC = () => {
             item._id === editing._id ? { ...item, ...formValues } : item,
           ),
         );
-        message.success("Cập nhật thử thách thành công!");
+        message.success("Cập nhật challenge thành công!");
       } else {
         const newChallenge: ChallengeData = {
           _id: "mock_" + Date.now(),
-          ...formValues,
+          isActive: true,
           testcases: [],
+          ...formValues,
         };
         setData((prev) => [...prev, newChallenge]);
         message.success("Thêm thử thách thành công!");
@@ -194,6 +205,8 @@ export const AdminDashboard: React.FC = () => {
     fileList.forEach((file: RcFile) => {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
+        let isFileValid = false; // Biến cờ kiểm tra trạng thái đọc của file này
+
         try {
           const resultString = e.target?.result as string;
           const json = JSON.parse(resultString) as JsonFileStructure;
@@ -209,43 +222,62 @@ export const AdminDashboard: React.FC = () => {
             );
             newImportedTestCases = [...newImportedTestCases, ...parsedCases];
             successFilesCount++;
+            isFileValid = true; 
             message.success(`Đọc thành công dữ liệu từ file: ${file.name}`);
           } else {
             message.error(
               `File ${file.name} sai cấu trúc (thiếu mảng test_cases).`,
             );
           }
-        } catch (error) {
+        } catch (catchError: unknown) {
+          const errorMessage =
+            catchError instanceof Error
+              ? catchError.message
+              : "Định dạng JSON không hợp lệ";
           message.error(
-            `File ${file.name} lỗi định dạng hoặc không phải JSON chuẩn. Chi tiết: ${error instanceof Error ? error.message : "Unknown error"}`,
+            `File ${file.name} lỗi định dạng hoặc không phải JSON chuẩn. Chi tiết: ${errorMessage}`,
           );
         } finally {
           completedFiles++;
+
           if (completedFiles === fileList.length) {
-            if (newImportedTestCases.length === 0) {
-              message.warning(
-                "Quá trình import hoàn tất: Không có testcase nào hợp lệ được thêm.",
-              );
-            } else {
-              const updatedTestCases = [
+            if (newImportedTestCases.length > 0) {
+              const finalTestCases = [
                 ...(currentChallenge.testcases || []),
                 ...newImportedTestCases,
               ];
-              const updatedData = data.map((item) =>
-                item._id === currentChallenge._id
-                  ? { ...item, testcases: updatedTestCases }
-                  : item,
+
+              let newPath = currentChallenge.testcasePath;
+              if (!newPath) {
+                newPath = `challenge/${fileList[0].name.toLowerCase()}`;
+              }
+
+              setData((prevData) =>
+                prevData.map((item) => {
+                  if (item._id === currentChallenge._id) {
+                    return {
+                      ...item,
+                      testcases: finalTestCases,
+                      testcasePath: newPath,
+                    };
+                  }
+                  return item;
+                }),
               );
-              setData(updatedData);
+
               setCurrentChallenge({
                 ...currentChallenge,
-                testcases: updatedTestCases,
+                testcases: finalTestCases,
+                testcasePath: newPath,
               });
+
               message.open({
                 type: "success",
-                content: `🎉 Khởi tạo dữ liệu thành công! Đã nạp thành công ${newImportedTestCases.length} testcase từ ${successFilesCount}/${fileList.length} file JSON.`,
+                content: `Đã nạp thành công ${newImportedTestCases.length} testcase từ ${successFilesCount}/${fileList.length} file JSON.`,
                 duration: 4,
               });
+            } else if (!isFileValid && completedFiles === fileList.length) {
+              message.warning("Không có testcase nào hợp lệ để thêm vào.");
             }
           }
         }
@@ -265,36 +297,62 @@ export const AdminDashboard: React.FC = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      width: "15%",
+      width: "25%",
+      render: (text: string, record: ChallengeData) => {
+        const parts = text.split(/\s*-\s(.*)/);
+        const filteredTitle = parts.length > 1 ? parts[1] : text;
+
+        return (
+          <div className="flex items-center gap-2">
+            {record.challengeType === "coding" ? (
+              <CodeXml size={16} className="text-blue-400 shrink-0" />
+            ) : (
+              <CircleCheckBig size={16} className="text-emerald-400 shrink-0" />
+            )}
+            <span className="font-medium text-slate-200">{filteredTitle}</span>
+          </div>
+        );
+      },
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
       ellipsis: true,
-      width: "25%",
+      width: "20%",
     },
     {
-      title: "Topic",
-      dataIndex: "topic",
-      key: "topic",
+      title: "Category ID",
+      dataIndex: "categoryId",
+      key: "categoryId",
     },
     {
       title: "Difficulty",
-      dataIndex: "difficulty",
-      key: "difficulty",
+      dataIndex: "difficult",
+      key: "difficult",
       render: (text: string) => {
         let color = "green";
-        if (text === "Medium") color = "orange";
-        if (text === "Hard") color = "red";
-        return <Tag color={color}>{text}</Tag>;
+        let label = "Dễ";
+        if (text && text.toLowerCase() === "medium") {
+          color = "orange";
+          label = "Thường";
+        }
+        if (text && text.toLowerCase() === "hard") {
+          color = "red";
+          label = "Khó";
+        }
+        return <Tag color={color}>{label}</Tag>;
       },
     },
     {
-      title: "Optimal Pattern",
-      dataIndex: "optimalPattern",
-      key: "optimalPattern",
+      title: "Testcase Path",
+      dataIndex: "testcasePath",
+      key: "testcasePath",
       width: "20%",
+      ellipsis: true,
+      render: (text: string) => (
+        <code className="text-xs text-slate-400">{text || "N/A"}</code>
+      ),
     },
     {
       title: "Actions",
@@ -330,7 +388,15 @@ export const AdminDashboard: React.FC = () => {
           <Trash2
             size={16}
             className="text-red-500 hover:text-red-400 cursor-pointer transition-colors"
-            onClick={() => handleDelete(record._id!)}
+            onClick={() => {
+              const idString =
+                typeof record._id === "object" &&
+                record._id !== null &&
+                "$oid" in record._id
+                  ? record._id.$oid
+                  : (record._id as string);
+              handleDelete(idString);
+            }}
           />
         </Space>
       ),
@@ -359,9 +425,14 @@ export const AdminDashboard: React.FC = () => {
         <Table
           dataSource={data}
           columns={columns}
-          rowKey="_id"
+          rowKey={(record) => {
+            if (typeof record._id === "object" && record._id !== null) {
+              return record._id.$oid;
+            }
+            return record._id || "key_" + Math.random();
+          }}
           pagination={{ pageSize: 8 }}
-          className="bg-[#111827] rounded-lg overflow-hidden shadow-2xl border border-zinc-800/50"
+          className="bg-[#111827] rounded-lg overflow-hidden shadow-2xl border border-zinc-800/50 mt-4"
         />
 
         <Modal
@@ -379,22 +450,43 @@ export const AdminDashboard: React.FC = () => {
           centered
         >
           <Form form={form} layout="vertical" className="mt-6">
-            <Form.Item
-              name="title"
-              label="Tiêu đề"
-              rules={[
-                { required: true, message: "Tiêu đề không được để trống" },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+            <div className="flex gap-4">
+              <Form.Item
+                name="title"
+                label="Tiêu đề"
+                rules={[
+                  { required: true, message: "Tiêu đề không được để trống" },
+                ]}
+                className="flex-2"
+              >
+                <Input placeholder="Nhập tên bài tập cụ thể" />
+              </Form.Item>
+
+              <Form.Item
+                name="challengeType"
+                label="Loại hình thử thách"
+                initialValue="coding"
+                rules={[{ required: true, message: "Vui lòng chọn loại hình" }]}
+                className="flex-1"
+              >
+                <Select placeholder="Chọn loại hình">
+                  <Select.Option value="coding">Coding</Select.Option>
+                  <Select.Option value="multiple_choice">
+                    Trắc nghiệm (Multiple Choice)
+                  </Select.Option>
+                </Select>
+              </Form.Item>
+            </div>
 
             <div className="flex gap-4">
               <Form.Item
-                name="topic"
-                label="Chủ đề"
+                name="categoryId"
+                label="ID danh mục"
                 rules={[
-                  { required: true, message: "Chủ đề không được để trống" },
+                  {
+                    required: true,
+                    message: "ID danh mục không được để trống",
+                  },
                 ]}
                 className="flex-1"
               >
@@ -402,30 +494,30 @@ export const AdminDashboard: React.FC = () => {
               </Form.Item>
 
               <Form.Item
-                name="difficulty"
+                name="difficult"
                 label="Độ khó"
                 rules={[{ required: true, message: "Vui lòng chọn độ khó" }]}
                 className="flex-1"
               >
                 <Select placeholder="Chọn độ khó">
-                  <Select.Option value="Easy">Dễ</Select.Option>
-                  <Select.Option value="Medium">Thường</Select.Option>
-                  <Select.Option value="Hard">Khó</Select.Option>
+                  <Select.Option value="easy">Dễ</Select.Option>
+                  <Select.Option value="medium">Thường</Select.Option>
+                  <Select.Option value="hard">Khó</Select.Option>
                 </Select>
               </Form.Item>
             </div>
 
             <Form.Item
-              name="optimalPattern"
-              label="Cấu trúc tối ưu"
+              name="testcasePath"
+              label="Đường dẫn lưu trữ file Testcase"
               rules={[
                 {
                   required: true,
-                  message: "Vui lòng nhập mô hình tối ưu bạn muốn hướng tới",
+                  message: "Vui lòng nhập đường dẫn file testcase",
                 },
               ]}
             >
-              <Input placeholder="VD: hash map lookup, Kadane's Algorithm, Dijkstra" />
+              <Input placeholder="Ví dụ: challenge/arr01_-_tim_so_lon_nhat_va_nho_nhat_trong_mang.json" />
             </Form.Item>
 
             <Form.Item
@@ -495,7 +587,7 @@ export const AdminDashboard: React.FC = () => {
                           },
                         },
                         {
-                          title: "Đầu vào (Input)",
+                          title: "Input",
                           dataIndex: "input",
                           key: "input",
                           ellipsis: true,
@@ -506,7 +598,7 @@ export const AdminDashboard: React.FC = () => {
                           ),
                         },
                         {
-                          title: "Kết quả (Expected Output)",
+                          title: "Expected output",
                           dataIndex: "expected_output",
                           key: "expected_output",
                           ellipsis: true,
@@ -517,7 +609,7 @@ export const AdminDashboard: React.FC = () => {
                           ),
                         },
                         {
-                          title: "Hành động",
+                          title: "Action",
                           key: "action",
                           align: "center",
                           width: "15%",
