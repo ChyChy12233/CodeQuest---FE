@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import type React from "react";
 
 interface TopicHeaderProps {
